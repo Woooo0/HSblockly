@@ -1,6 +1,6 @@
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const { app, BrowserWindow, Menu } = require('electron')
+const { SerialPort } = require('serialport')
+const exec = require('child_process').exec;
 
 // 保持一个对于 window 对象的全局引用，不然，当 JavaScript 被 GC，
 // window 会被自动地关闭
@@ -22,7 +22,7 @@ app.on('ready', function() {
     mainWindow = new BrowserWindow({ width: 800, height: 600 });
 
     // 加载应用的 index.html
-    mainWindow.loadURL('file://' + __dirname + '/index.html');
+    mainWindow.loadURL('file://' + __dirname + '/src/index.html');
 
     // 打开开发工具
     mainWindow.openDevTools();
@@ -34,4 +34,62 @@ app.on('ready', function() {
         // 但这次不是。
         mainWindow = null;
     });
+
+    const template = [{
+            label: '文件',
+            submenu: [{
+                    label: '打开文件'
+                },
+                {
+                    label: '保存文件'
+                }
+            ]
+        },
+        {
+            label: '设备',
+            submenu: [{
+                    label: '选择设备',
+                    click() {
+                        console.log("test");
+
+                        SerialPort.list().then((ports) => {
+                            console.log(ports); // 打印串口列表
+                        }).catch((err) => {
+                            console.log(err);
+                        });
+
+                    }
+                },
+                {
+                    label: '端口',
+                    // click() {
+                    //     const port = new SerialPort('COM3', (err) => {
+                    //         if (err) {
+                    //             console.log('端口打开失败！');
+                    //             return;
+                    //         }
+                    //         console.log('端口打开成功！');
+                    //     });
+                    // }
+                }
+            ]
+        },
+        {
+            label: '上传',
+            submenu: [{
+                label: '上传程序',
+                click() {
+                    exec('python3 test.py', function(error, stdout, stderr) {
+                        if (error) {
+                            console.info('stderr : ' + stderr);
+                        }
+                        console.log('exec: ' + stdout);
+                    })
+                }
+            }, ]
+        }
+    ];
+
+    const appMenu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(appMenu);
 });
