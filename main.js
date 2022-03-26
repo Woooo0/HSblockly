@@ -2,6 +2,9 @@ const { app, BrowserWindow, Menu } = require('electron')
 const { SerialPort } = require('serialport')
 const exec = require('child_process').exec;
 
+const log = require('electron-log');
+log.transports.file.resolvePath = () => "E:\HSblockly"
+
 // 保持一个对于 window 对象的全局引用，不然，当 JavaScript 被 GC，
 // window 会被自动地关闭
 var mainWindow = null;
@@ -79,11 +82,11 @@ app.on('ready', function() {
             submenu: [{
                 label: '上传程序',
                 click() {
-                    exec('python3 test.py', function(error, stdout, stderr) {
+                    exec('python test.py', function(error, stdout, stderr) {
                         if (error) {
-                            console.info('stderr : ' + stderr);
+                            log.error('stderr : ' + stderr);
                         }
-                        console.log('exec: ' + stdout);
+                        log.warn('exec: ' + stdout);
                     })
                 }
             }, ]
