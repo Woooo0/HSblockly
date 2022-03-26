@@ -473,9 +473,12 @@ def put_custom(local, remote):
             board_files.put(remote, infile.read())
 
 if __name__ == "__main__":
+    import sys
+    port = sys.argv[1]
+    file = sys.argv[2]
     try:
-        cli_custom("COM3", 115200, 0)
-        put_custom("test.py", None)
+        cli_custom(port, 115200, 0)
+        put_custom(file, None)
     finally:
         # Try to ensure the board serial connection is always gracefully closed.
         if _board is not None:

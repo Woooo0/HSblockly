@@ -1,6 +1,6 @@
 const { app, BrowserWindow, Menu } = require('electron')
 const { SerialPort } = require('serialport')
-const exec = require('child_process').exec;
+const exec = require('child_process').execFile;
 
 const log = require('electron-log');
 log.transports.file.resolvePath = () => "E:\HSblockly"
@@ -82,12 +82,16 @@ app.on('ready', function() {
             submenu: [{
                 label: '上传程序',
                 click() {
-                    exec('python ./uploads/ampy/cli.py', function(error, stdout, stderr) {
-                        if (error) {
-                            log.error('stderr : ' + stderr);
+                    var executablePath = "cli.exe";
+                    var parameters = ["COM3", "test.py"];
+                    exec(executablePath, parameters, function(err, data) {
+                        if (err) {
+                            console.error(err);
+                            console.log(data.toString());
+                        } else {
+                            console.log("uploads successly");
                         }
-                        log.warn('exec: ' + stdout);
-                    })
+                    });
                 }
             }, ]
         }
