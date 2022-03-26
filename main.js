@@ -82,7 +82,7 @@ app.on('ready', function() {
             submenu: [{
                 label: '上传程序',
                 click() {
-                    exec('python test.py', function(error, stdout, stderr) {
+                    exec('python ./uploads/ampy/cli.py', function(error, stdout, stderr) {
                         if (error) {
                             log.error('stderr : ' + stderr);
                         }

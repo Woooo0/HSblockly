@@ -1,6 +1,18 @@
-[2022-03-26 09:16:49.795] [warn]  exec: test ...
+[2022-03-26 15:13:32.501] [error] stderr : Traceback (most recent call last):
+  File "E:\HSblockly\uploads\ampy\cli.py", line 478, in <module>
+    put_custom("./test.py", None)
+  File "E:\HSblockly\uploads\ampy\cli.py", line 471, in put_custom
+    with open(local, "rb") as infile:
+FileNotFoundError: [Errno 2] No such file or directory: './test.py'
 
-[2022-03-26 10:27:22.878] [warn]  exec: test ...
+[2022-03-26 15:13:32.505] [warn]  exec: 
+[2022-03-26 15:14:30.192] [error] stderr : Traceback (most recent call last):
+  File "E:\HSblockly\uploads\ampy\cli.py", line 478, in <module>
+    put_custom("test.py", None)
+  File "E:\HSblockly\uploads\ampy\cli.py", line 471, in put_custom
+    with open(local, "rb") as infile:
+FileNotFoundError: [Errno 2] No such file or directory: 'test.py'
 
-[2022-03-26 11:10:52.051] [warn]  exec: test ...
-
+[2022-03-26 15:14:30.197] [warn]  exec: 
+[2022-03-26 15:15:10.864] [warn]  exec: 
+[2022-03-26 15:15:38.402] [warn]  exec: 
