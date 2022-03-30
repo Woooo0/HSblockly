@@ -5,14 +5,58 @@
     <title>科盟科教</title>
     <script src="../node_modules/blockly/blockly_compressed.js"></script>
     <script src="../node_modules/blockly/blocks_compressed.js"></script>
-    <script src="../node_modules/blockly/msg/zh-hans.js"></script>
+    <script src="../node_modules/blockly/python_compressed.js"></script>
+    <script src="../node_modules/blockly/msg/en.js"></script>
 </head>
 
 <body style="height:100%">
     <div id="blocklyDiv" style="width:100%;height:100%"></div>
 
     <xml id="toolbox" style="display: none">
-        <block type="controls_if"></block>
+        <category name="电机" colour="210">
+            <block type="controls_if"></block>
+            <block type="logic_compare"></block>
+            <block type="math_number"></block>
+            <block type="math_arithmetic"></block>
+            <block type="text"></block>
+            <block type="text_print"></block>
+        </category>
+        <category name="LED" colour="120">
+            <block type="controls_if"></block>
+            <block type="controls_if">
+                <mutation else="1"></mutation>
+            </block>
+            <block type="controls_if">
+                <mutation elseif="1" else="1"></mutation>
+            </block>
+        </category>
+        <category name="传感器" colour="230">
+            <block type="controls_if"></block>
+            <block type="controls_if">
+                <mutation else="1"></mutation>
+            </block>
+            <block type="controls_if">
+                <mutation elseif="1" else="1"></mutation>
+            </block>
+        </category>
+        <category name="音乐" colour="20">
+            <block type="controls_if"></block>
+            <block type="controls_if">
+                <mutation else="1"></mutation>
+            </block>
+            <block type="controls_if">
+                <mutation elseif="1" else="1"></mutation>
+            </block>
+        </category>
+        <category name="通信" colour="330">
+            <block type="controls_if"></block>
+            <block type="controls_if">
+                <mutation else="1"></mutation>
+            </block>
+            <block type="controls_if">
+                <mutation elseif="1" else="1"></mutation>
+            </block>
+        </category>
     </xml>
     <script>
         //生成模块列表区域
@@ -39,6 +83,12 @@
         //注册resize处理函数
         window.addEventListener('resize', onresize);
         Blockly.svgResize(workspace);
+
+        function myUpdateFunction(event) {
+            var code = Blockly.Python.workspaceToCode(workspace);
+            console.log(code);
+        }
+        workspace.addChangeListener(myUpdateFunction);
     </script>
 </body>
 

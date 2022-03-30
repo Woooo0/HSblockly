@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Menu } = require('electron')
 const { SerialPort } = require('serialport')
 const exec = require('child_process').execFile;
+const fs = require('fs');
 
 const log = require('electron-log');
 log.transports.file.resolvePath = () => "E:\HSblockly"
@@ -44,10 +45,19 @@ app.on('ready', function() {
     const template = [{
             label: '文件',
             submenu: [{
-                    label: '打开文件'
+                    label: '打开文件',
                 },
                 {
-                    label: '保存文件'
+                    label: '保存文件',
+                    click() {
+                        fs.writeFile('E:\main.py', 'print("成功啦");', function(error) {
+                            if (error) {
+                                console.log('写入成功')
+                            } else {
+                                console.log('写入成功')
+                            }
+                        });
+                    }
                 }
             ]
         },
@@ -86,7 +96,7 @@ app.on('ready', function() {
                 label: '上传程序',
                 click() {
                     var executablePath = "cli.exe";
-                    var parameters = ["COM9", "test.py"];
+                    var parameters = ["COM9", "main.py"];
                     exec(executablePath, parameters, function(err, data) {
                         if (err) {
                             console.error(err);
