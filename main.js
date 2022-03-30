@@ -5,6 +5,9 @@ const exec = require('child_process').execFile;
 const log = require('electron-log');
 log.transports.file.resolvePath = () => "E:\HSblockly"
 
+const reloader = require('electron-reloader')
+reloader(module)
+
 // 保持一个对于 window 对象的全局引用，不然，当 JavaScript 被 GC，
 // window 会被自动地关闭
 var mainWindow = null;
@@ -83,7 +86,7 @@ app.on('ready', function() {
                 label: '上传程序',
                 click() {
                     var executablePath = "cli.exe";
-                    var parameters = ["COM3", "test.py"];
+                    var parameters = ["COM9", "test.py"];
                     exec(executablePath, parameters, function(err, data) {
                         if (err) {
                             console.error(err);

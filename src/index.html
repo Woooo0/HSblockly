@@ -1,20 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html style="height:100%">
 
 <head>
-    <title>Hello World!</title>
+    <title>科盟科教</title>
+    <script src="../node_modules/blockly/blockly_compressed.js"></script>
+    <script src="../node_modules/blockly/blocks_compressed.js"></script>
+    <script src="../node_modules/blockly/msg/zh-hans.js"></script>
 </head>
 
-<body>
-    <h1>hello world!</h1>
-    We are using io.js
+<body style="height:100%">
+    <div id="blocklyDiv" style="width:100%;height:100%"></div>
+
+    <xml id="toolbox" style="display: none">
+        <block type="controls_if"></block>
+    </xml>
     <script>
-        document.write(process.version)
+        //生成模块列表区域
+        var blocklyDiv = document.getElementById('blocklyDiv');
+        var workspace = Blockly.inject(blocklyDiv, {
+            media: '../node_modules/blockly/media/',
+            toolbox: document.getElementById('toolbox'),
+            zoom: {
+                controls: true,
+                wheel: true,
+                startScale: 1.0,
+                maxScale: 3,
+                minScale: 0.5,
+                scaleSpeed: 1.05
+            },
+            trashcan: true,
+            scrollBar: true
+        });
+
+        //调整工作区域大小
+        var onresize = function(e) {
+            Blockly.svgResize(workspace);
+        };
+        //注册resize处理函数
+        window.addEventListener('resize', onresize);
+        Blockly.svgResize(workspace);
     </script>
-    and Electron
-    <script>
-        document.write(process.versions['electron'])
-    </script>.
 </body>
 
 </html>

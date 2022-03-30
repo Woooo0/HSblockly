@@ -13,10 +13,12 @@
         "electron": "^17.1.2",
         "electron-builder": "^22.14.13",
         "electron-log": "^4.4.6",
+        "electron-reloader": "^1.2.3",
         "serialport": "^10.4.0"
     },
     "dependencies": {
         "electron-log": "^4.4.6",
-        "serialport": "^10.4.0"
+        "serialport": "^10.4.0",
+        "blockly": "^7.20211209.4"
     }
 }
