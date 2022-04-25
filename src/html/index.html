@@ -3,14 +3,27 @@
 
 <head>
     <title>科盟科教</title>
-    <script src="../node_modules/blockly/blockly_compressed.js"></script>
-    <script src="../node_modules/blockly/blocks_compressed.js"></script>
-    <script src="../node_modules/blockly/python_compressed.js"></script>
-    <script src="../node_modules/blockly/msg/en.js"></script>
+    <script src="../../node_modules/blockly/blockly_compressed.js"></script>
+    <script src="../../node_modules/blockly/blocks_compressed.js"></script>
+    <script src="../../node_modules/blockly/python_compressed.js"></script>
+    <script src="../../node_modules/blockly/msg/en.js"></script>
+    <link rel="stylesheet" href="../css/index.css">
 </head>
 
 <body style="height:100%">
-    <div id="blocklyDiv" style="width:100%;height:100%"></div>
+
+    <div class="master">
+        <div id="blocklyDiv" style="height: 100%; width: 80%"></div>
+        <div class="side">
+            <textarea id="output" disabled="disabled">
+            hello KmEducation
+        </textarea>
+            <textarea id="uart" disabled="disabled">
+            hello KmEducation
+        </textarea>
+        </div>
+    </div>
+
 
     <xml id="toolbox" style="display: none">
         <category name="电机" colour="210">
@@ -62,7 +75,7 @@
         //生成模块列表区域
         var blocklyDiv = document.getElementById('blocklyDiv');
         var workspace = Blockly.inject(blocklyDiv, {
-            media: '../node_modules/blockly/media/',
+            media: '../../node_modules/blockly/media/',
             toolbox: document.getElementById('toolbox'),
             zoom: {
                 controls: true,
@@ -77,7 +90,7 @@
         });
 
         //调整工作区域大小
-        var onresize = function(e) {
+        var onresize = function (e) {
             Blockly.svgResize(workspace);
         };
         //注册resize处理函数

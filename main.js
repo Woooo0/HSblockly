@@ -4,7 +4,7 @@ const exec = require('child_process').execFile;
 const fs = require('fs');
 
 const log = require('electron-log');
-log.transports.file.resolvePath = () => "E:\HSblockly"
+log.transports.file.resolvePath = () => "./HSlog.log"
 
 const reloader = require('electron-reloader')
 reloader(module)
@@ -29,7 +29,7 @@ app.on('ready', function() {
     mainWindow = new BrowserWindow({ width: 800, height: 600 });
 
     // 加载应用的 index.html
-    mainWindow.loadURL('file://' + __dirname + '/src/index.html');
+    mainWindow.loadURL('file://' + __dirname + '/src/html/index.html');
 
     // 打开开发工具
     mainWindow.openDevTools();
@@ -50,11 +50,11 @@ app.on('ready', function() {
                 {
                     label: '保存文件',
                     click() {
-                        fs.writeFile('E:\main.py', 'print("成功啦");', function(error) {
+                        fs.writeFile('./main.py', 'print("你好，世界！")', function(error) {
                             if (error) {
-                                console.log('写入成功')
+                                log.error('write script error')
                             } else {
-                                console.log('写入成功')
+                                log.info('wite script successful')
                             }
                         });
                     }
@@ -96,9 +96,10 @@ app.on('ready', function() {
                 label: '上传程序',
                 click() {
                     var executablePath = "cli.exe";
-                    var parameters = ["COM9", "main.py"];
+                    var parameters = ["COM3", "main.py"];
                     exec(executablePath, parameters, function(err, data) {
                         if (err) {
+                            log.info('uploads error: ', err)
                             console.error(err);
                             console.log(data.toString());
                         } else {
