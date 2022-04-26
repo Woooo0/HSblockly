@@ -73,33 +73,31 @@ app.on('ready', function () {
         submenu: [{
             label: '选择设备',
             click() {
-                console.log("选择设备");
-
                 SerialPort.list().then((ports) => {
                     console.log(ports); // 打印串口列表
                 }).catch((err) => {
                     console.log(err);
                 });
-
             }
         },
         {
             label: '端口',
             click() {
                 var port = new SerialPort({
-                    path: 'COM4',
+                    path: 'COM3',
                     autoOpen: false,
                     baudRate: 115200, //波特率
                     dataBits: 8, //数据位
                     parity: 'none', //奇偶校验
                     stopBits: 1, //停止位
-                    flowControl: false
+                    flowControl: false,
+                    rtscts: true
                 }, false);
                 port.open(function (error) {
                     if (error) {
                         console.log("打开端口错误：" + error);
                     } else {
-                        console.log("打开端口成功，正在监听数据中");
+                        console.log("打开端口成功，正在监听数据中 ...");
                         const { DelimiterParser } = require('@serialport/parser-delimiter')
                         const parser = port.pipe(new DelimiterParser({ delimiter: '\n' }))
                         parser.on('data', chunk => {
