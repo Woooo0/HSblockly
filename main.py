@@ -1,4 +1,4 @@
-if 100 != 200:
+if False:
   pass
-
-'北京欢迎你'
+if False:
+  pass

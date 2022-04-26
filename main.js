@@ -53,7 +53,7 @@ app.on('ready', function () {
     ipcMain.on('index.html', (event, arg) => {
         console.log(arg);
         code = arg;
-      })
+    })
 
     const template = [{
         label: '文件',
@@ -63,13 +63,7 @@ app.on('ready', function () {
         {
             label: '保存文件',
             click() {
-                fs.writeFile('./main.py', code, function (error) {
-                    if (error) {
-                        log.error('write script error')
-                    } else {
-                        log.info('wite script successful')
-                    }
-                });
+                console.log("保存文件")
             }
         }
         ]
@@ -79,7 +73,7 @@ app.on('ready', function () {
         submenu: [{
             label: '选择设备',
             click() {
-                console.log("test");
+                console.log("选择设备");
 
                 SerialPort.list().then((ports) => {
                     console.log(ports); // 打印串口列表
@@ -91,15 +85,30 @@ app.on('ready', function () {
         },
         {
             label: '端口',
-            // click() {
-            //     const port = new SerialPort('COM3', (err) => {
-            //         if (err) {
-            //             console.log('端口打开失败！');
-            //             return;
-            //         }
-            //         console.log('端口打开成功！');
-            //     });
-            // }
+            click() {
+                var port = new SerialPort({
+                    path: 'COM4',
+                    autoOpen: false,
+                    baudRate: 115200, //波特率
+                    dataBits: 8, //数据位
+                    parity: 'none', //奇偶校验
+                    stopBits: 1, //停止位
+                    flowControl: false
+                }, false);
+                port.open(function (error) {
+                    if (error) {
+                        console.log("打开端口错误：" + error);
+                    } else {
+                        console.log("打开端口成功，正在监听数据中");
+                        const { DelimiterParser } = require('@serialport/parser-delimiter')
+                        const parser = port.pipe(new DelimiterParser({ delimiter: '\n' }))
+                        parser.on('data', chunk => {
+                            console.log(chunk.toString()); // 打印收到的数据
+                            mainWindow.webContents.send('main-process-uart', chunk.toString());
+                        });
+                    }
+                });
+            }
         }
         ]
     },
@@ -108,6 +117,14 @@ app.on('ready', function () {
         submenu: [{
             label: '上传程序',
             click() {
+                fs.writeFile('./main.py', code, function (error) {
+                    if (error) {
+                        log.error('write script error')
+                    } else {
+                        log.info('wite script successful')
+                    }
+                });
+
                 var executablePath = "cli.exe";
                 var parameters = ["COM4", "main.py"];
                 exec(executablePath, parameters, function (err, data) {

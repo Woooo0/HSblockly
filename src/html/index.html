@@ -17,9 +17,7 @@
         <div id="blocklyDiv" style="height: 100%; width: 80%"></div>
         <div class="side">
             <textarea id="output" disabled="disabled"></textarea>
-            <textarea id="uart" disabled="disabled">
-            hello KmEducation
-            </textarea>
+            <textarea id="uart" disabled="disabled"></textarea>
         </div>
     </div>
 
@@ -71,7 +69,11 @@
     </xml>
     <script>
         const { ipcRenderer } = require('electron')
-
+        var uart = document.getElementById("uart");
+        ipcRenderer.on('main-process-uart', (event, arg) => {
+            uart.value += arg;
+            uart.scrollTop = uart.scrollHeight;
+        });
         //生成模块列表区域
         var blocklyDiv = document.getElementById('blocklyDiv');
         var workspace = Blockly.inject(blocklyDiv, {
