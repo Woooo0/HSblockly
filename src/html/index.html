@@ -7,6 +7,7 @@
     <script src="../../node_modules/blockly/blocks_compressed.js"></script>
     <script src="../../node_modules/blockly/python_compressed.js"></script>
     <script src="../../node_modules/blockly/msg/en.js"></script>
+    <script src="../js/index.js"></script>
     <link rel="stylesheet" href="../css/index.css">
 </head>
 
@@ -15,15 +16,12 @@
     <div class="master">
         <div id="blocklyDiv" style="height: 100%; width: 80%"></div>
         <div class="side">
-            <textarea id="output" disabled="disabled">
-            hello KmEducation
-        </textarea>
+            <textarea id="output" disabled="disabled"></textarea>
             <textarea id="uart" disabled="disabled">
             hello KmEducation
-        </textarea>
+            </textarea>
         </div>
     </div>
-
 
     <xml id="toolbox" style="display: none">
         <category name="电机" colour="210">
@@ -72,6 +70,8 @@
         </category>
     </xml>
     <script>
+        const { ipcRenderer } = require('electron')
+
         //生成模块列表区域
         var blocklyDiv = document.getElementById('blocklyDiv');
         var workspace = Blockly.inject(blocklyDiv, {
@@ -99,7 +99,10 @@
 
         function myUpdateFunction(event) {
             var code = Blockly.Python.workspaceToCode(workspace);
+            var output = document.getElementById("output");
+            output.value = code;
             console.log(code);
+            ipcRenderer.send('index.html', code.toString());
         }
         workspace.addChangeListener(myUpdateFunction);
     </script>

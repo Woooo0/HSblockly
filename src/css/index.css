@@ -10,7 +10,7 @@
 }
 
 .side{
-    width: 20%;
+    width: 19.8%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -19,4 +19,5 @@
 .side textarea{
     width: 100%;
     height: 50%;
+    resize: none;
 }

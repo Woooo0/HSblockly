@@ -1,0 +1,29 @@
+[2022-04-26 09:36:59.216] [info]  wite script successful
+[2022-04-26 09:37:54.031] [info]  wite script successful
+[2022-04-26 09:38:48.602] [info]  uploads error:  Error: Command failed: cli.exe COM3 main.py
+Traceback (most recent call last):
+  File "ampy\cli.py", line 481, in <module>
+  File "ampy\cli.py", line 473, in put_custom
+  File "ampy\files.py", line 216, in put
+  File "ampy\pyboard.py", line 207, in enter_raw_repl
+ampy.pyboard.PyboardError: could not enter raw repl
+[4284] Failed to execute script 'cli' due to unhandled exception!
+
+    at ChildProcess.exithandler (node:child_process:406:12)
+    at ChildProcess.emit (node:events:390:28)
+    at maybeClose (node:internal/child_process:1064:16)
+    at Process.ChildProcess._handle.onexit (node:internal/child_process:301:5)
+[2022-04-26 09:39:47.362] [info]  uploads error:  Error: Command failed: cli.exe COM3 main.py
+Traceback (most recent call last):
+  File "ampy\cli.py", line 481, in <module>
+  File "ampy\cli.py", line 473, in put_custom
+  File "ampy\files.py", line 216, in put
+  File "ampy\pyboard.py", line 207, in enter_raw_repl
+ampy.pyboard.PyboardError: could not enter raw repl
+[8736] Failed to execute script 'cli' due to unhandled exception!
+
+    at ChildProcess.exithandler (node:child_process:406:12)
+    at ChildProcess.emit (node:events:390:28)
+    at maybeClose (node:internal/child_process:1064:16)
+    at Process.ChildProcess._handle.onexit (node:internal/child_process:301:5)
+[2022-04-26 09:41:50.657] [info]  wite script successful
