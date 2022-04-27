@@ -1,4 +1,1 @@
-if False:
-  pass
-if False:
-  pass
+'我是广东人'

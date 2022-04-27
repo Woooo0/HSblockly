@@ -1,7 +1,4 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron')
-const { SerialPort } = require('serialport')
-const exec = require('child_process').execFile;
-const fs = require('fs');
 
 const log = require('electron-log');
 log.transports.file.resolvePath = () => "./HSlog.log"
@@ -27,8 +24,8 @@ app.on('window-all-closed', function () {
 app.on('ready', function () {
     // 创建浏览器窗口。
     mainWindow = new BrowserWindow({
-        width: 1200,
-        height: 1000,
+        width: 1000,
+        height: 800,
 
         webPreferences: {
             nodeIntegration: true,
@@ -49,97 +46,6 @@ app.on('ready', function () {
         // 但这次不是。
         mainWindow = null;
     });
-    var code;
-    ipcMain.on('index.html', (event, arg) => {
-        console.log(arg);
-        code = arg;
-    })
 
-    const template = [{
-        label: '文件',
-        submenu: [{
-            label: '打开文件',
-        },
-        {
-            label: '保存文件',
-            click() {
-                console.log("保存文件")
-            }
-        }
-        ]
-    },
-    {
-        label: '设备',
-        submenu: [{
-            label: '选择设备',
-            click() {
-                SerialPort.list().then((ports) => {
-                    console.log(ports); // 打印串口列表
-                }).catch((err) => {
-                    console.log(err);
-                });
-            }
-        },
-        {
-            label: '端口',
-            click() {
-                var port = new SerialPort({
-                    path: 'COM3',
-                    autoOpen: false,
-                    baudRate: 115200, //波特率
-                    dataBits: 8, //数据位
-                    parity: 'none', //奇偶校验
-                    stopBits: 1, //停止位
-                    flowControl: false,
-                    rtscts: true
-                }, false);
-                port.open(function (error) {
-                    if (error) {
-                        console.log("打开端口错误：" + error);
-                    } else {
-                        console.log("打开端口成功，正在监听数据中 ...");
-                        const { DelimiterParser } = require('@serialport/parser-delimiter')
-                        const parser = port.pipe(new DelimiterParser({ delimiter: '\n' }))
-                        parser.on('data', chunk => {
-                            console.log(chunk.toString()); // 打印收到的数据
-                            mainWindow.webContents.send('main-process-uart', chunk.toString());
-                        });
-                    }
-                });
-            }
-        }
-        ]
-    },
-    {
-        label: '上传',
-        submenu: [{
-            label: '上传程序',
-            click() {
-                fs.writeFile('./main.py', code, function (error) {
-                    if (error) {
-                        log.error('write script error')
-                    } else {
-                        log.info('wite script successful')
-                    }
-                });
-
-                var executablePath = "cli.exe";
-                var parameters = ["COM4", "main.py"];
-                exec(executablePath, parameters, function (err, data) {
-                    if (err) {
-                        log.info('uploads error: ', err)
-                        console.error(err);
-                        console.log(data.toString());
-                    } else {
-                        console.log("uploads successly");
-                    }
-                });
-            }
-        },]
-    }
-    ];
-
-    const appMenu = Menu.buildFromTemplate(template);
-    //Menu.setApplicationMenu(appMenu);
     Menu.setApplicationMenu(null) 
 });
