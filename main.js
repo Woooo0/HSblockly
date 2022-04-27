@@ -27,8 +27,8 @@ app.on('window-all-closed', function () {
 app.on('ready', function () {
     // 创建浏览器窗口。
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1200,
+        height: 1000,
 
         webPreferences: {
             nodeIntegration: true,
@@ -140,5 +140,6 @@ app.on('ready', function () {
     ];
 
     const appMenu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(appMenu);
+    //Menu.setApplicationMenu(appMenu);
+    Menu.setApplicationMenu(null) 
 });
