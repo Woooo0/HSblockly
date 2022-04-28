@@ -5,12 +5,12 @@
 
 .menu-bar {
     width: 100%;
-    min-width: 500px;
+    min-width: 800px;
     height: 45px;
     display: flex;
     align-items: center;
     background-color: #0099ff;
-    font-size:15px;
+    font-size: 15px;
     font-weight: 900;
 }
 
@@ -38,34 +38,35 @@
     color: white;
 }
 
-.black_overlay{ 
-    display: none; 
-    position: absolute; 
-    top: 0%; 
-    left: 0%; 
-    width: 100%; 
-    height: 100%; 
-    background-color: #afafaf; 
-    z-index:1001; 
-    -moz-opacity: 0.8; 
-    opacity:.80; 
-    filter: alpha(opacity=88); 
-} 
-.white_content { 
-    width: 500px; 
-    height: 400px; 
-    display: none; 
-    position: absolute; 
-    top: 25%; 
-    left: 35%; 
-    padding: 20px; 
-    background-color: white; 
-    z-index:1002; 
-    overflow: auto; 
-    border-radius: 15px;
-} 
+.black_overlay {
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: #afafaf;
+    z-index: 1001;
+    -moz-opacity: 0.8;
+    opacity: .80;
+    filter: alpha(opacity=88);
+}
 
-.device-message{
+.white_content {
+    width: 500px;
+    height: 400px;
+    display: none;
+    position: absolute;
+    top: 25%;
+    left: 35%;
+    padding: 20px;
+    background-color: white;
+    z-index: 1002;
+    overflow: auto;
+    border-radius: 15px;
+}
+
+.device-message {
     width: 450px;
     height: 100px;
     display: flex;
@@ -76,13 +77,13 @@
     margin-top: 20px;
 }
 
-.device-message img{
+.device-message img {
     width: 90px;
     height: 90px;
     margin-left: 10px;
 }
 
-.white_content button{
+.white_content button {
     margin-top: 110px;
     margin-left: 205px;
     background-color: #0099ff;
@@ -99,18 +100,84 @@
 .master {
     width: 100%;
     height: 95.5%;
+    min-width: 800px;
+    min-height: 300px;
     display: flex;
 }
 
 .side {
-    width: 19.8%;
+    width: 20%;
     height: 100%;
+    min-width: 300px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.side textarea {
+.code-view {
+    width: 98%;
+    height: 60%;
+    display: flex;
+}
+
+.code-view textarea {
     width: 100%;
-    height: 50%;
+    height: 98%;
     resize: none;
+    border: none;
+    border: 1px solid #afafaf;
+    border-radius: 10px;
+    outline-color: #0099ff;
+}
+
+.uart-view {
+    width: 98%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    resize: none;
+    border: 1px solid #afafaf;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.uart-view textarea {
+    height: 90%;
+    width: 100%;
+    resize: none;
+    border: none;
+}
+
+.uart-input {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #afafaf;
+}
+
+.uart-view input {
+    height: 24px;
+    width: 55%;
+    border: 1px solid #afafaf;
+    border-radius: 5px;
+    outline-color: #0099ff;
+}
+
+.uart-view button {
+    min-height: 25px;
+    min-width: 50px;
+    margin-left: 10px;
+    background-color: #0099ff;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
 }

@@ -8,7 +8,12 @@
     <script src="../../node_modules/blockly/python_compressed.js"></script>
     <script src="../../node_modules/blockly/msg/en.js"></script>
     <script src="../js/index.js"></script>
+    <script> if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+    <script src="../js/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="../js/jquery-linedtextarea.js"></script>
+    <script> if (window.module) module = window.moudle;</script>
     <link rel="stylesheet" href="../css/index.css">
+    <link href="../css/jquery-linedtextarea.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body style="height:100%; overflow:hidden">
@@ -36,9 +41,9 @@
             <span>关于</span>
         </div>
     </div>
-    
+
     <div id="light" class="white_content" onclick="select_device()">
-        <div id="9028b" class="device-message" >
+        <div id="9028b" class="device-message">
             <img src="../images/9016.jpg" />
             <span>9028b</span>
         </div>
@@ -46,15 +51,24 @@
             <img src="../images/9016.jpg" />
             <span>9016</span>
         </div>
-       <button id="close_popup" type="button">关闭</button>
+        <button id="close_popup" type="button">关闭</button>
     </div>
     <div id="fade" class="black_overlay"></div>
 
     <div class="master">
         <div id="blocklyDiv" style="height: 100%; width: 80%"></div>
         <div class="side">
-            <textarea id="output" disabled="disabled"></textarea>
-            <textarea id="uart" disabled="disabled"></textarea>
+            <div class="code-view">
+                <textarea id="output" class="code-text" rows="1" cols="80"></textarea>
+            </div>
+            <div class="uart-view">
+                <textarea id="uart" disabled="disabled"></textarea>
+                <div class="uart-input">
+                    <input type="text" name="firstname" value="">
+                    <button id="uart-send" type="button">发送</button>
+                    <button id="uart-send" type="button">暂停</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -104,6 +118,11 @@
             </block>
         </category>
     </xml>
+    <script>
+        $(function () {
+            $(".code-text").linedtextarea();
+        });
+    </script>
     <script>
         const { ipcRenderer } = require('electron')
         //生成模块列表区域

@@ -1,4 +1,5 @@
 const { SerialPort } = require('serialport')
+const { shell } = require('electron')
 const exec = require('child_process').execFile;
 const fs = require('fs');
 
@@ -85,5 +86,5 @@ function uploads() {
 }
 
 function about() {
-    console.log("about")
+    shell.openExternal('http://www.kmmaker.com')
 }
