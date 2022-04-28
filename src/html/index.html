@@ -14,14 +14,18 @@
 <body style="height:100%; overflow:hidden">
 
     <div class="menu-bar">
-        <img src="../images/logo.svg" style="margin-left: 15px; margin-right: 15px; width: 120px; height: 45px;"/>
+        <img src="../images/logo.svg" style="margin-left: 15px; margin-right: 15px; width: 120px; height: 45px;" />
         <div class="menu-button" onclick="file()">
             <img src="../images/file.svg" />
             <span>文件</span>
         </div>
-        <div class="menu-button" onclick="device()">
+        <div class="menu-button" onclick="select()">
             <img src="../images/device.svg" />
             <span>选择设备</span>
+        </div>
+        <div class="menu-button" onclick="connect_device()">
+            <img src="../images/connect.svg" />
+            <span>连接设备</span>
         </div>
         <div class="menu-button" onclick="uploads()">
             <img src="../images/uploads.svg" />
@@ -32,6 +36,20 @@
             <span>关于</span>
         </div>
     </div>
+    
+    <div id="light" class="white_content" onclick="select_device()">
+        <div id="9028b" class="device-message" >
+            <img src="../images/9016.jpg" />
+            <span>9028b</span>
+        </div>
+        <div id="9016" class="device-message">
+            <img src="../images/9016.jpg" />
+            <span>9016</span>
+        </div>
+       <button id="close_popup" type="button">关闭</button>
+    </div>
+    <div id="fade" class="black_overlay"></div>
+
     <div class="master">
         <div id="blocklyDiv" style="height: 100%; width: 80%"></div>
         <div class="side">

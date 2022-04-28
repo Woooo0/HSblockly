@@ -6,7 +6,29 @@ function file() {
     console.log("file")
 }
 
-function device() {
+function select() {
+    document.getElementById('light').style.display = 'block';
+    document.getElementById('fade').style.display = 'block';
+}
+
+function select_device(evt) {
+    evt = evt || window.event;
+    var obj = evt.target || evt.srcElement;
+    switch (obj.id) {
+        case "9028b":
+            console.log('9028b');
+            break;
+        case "9016":
+            console.log('9016');
+            break;
+        case "close_popup":
+            document.getElementById('light').style.display = 'none';
+            document.getElementById('fade').style.display = 'none';
+            break;
+    }
+}
+
+function connect_device() {
     SerialPort.list().then((ports) => {
         console.log(ports); // 打印串口列表
     }).catch((err) => {
