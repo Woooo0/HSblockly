@@ -1,9 +1,9 @@
 .linedwrap {
 	width: 100%;
-	height: 98%;
-	border: 1px solid #c0c0c0;
-    border-radius: 10px;
-	margin-top: 5px;
+	height: 94%;
+	display: flex;
+	justify-content: center;
+	padding: 15px;
 }
 
 .linedtextarea textarea, .linedwrap .codelines .lineno {
@@ -17,12 +17,12 @@
 }
 
 .linedwrap .lines {
+	margin-top: 0px;
+	width: 50px;
 	float: left;
 	overflow: hidden;
-}
-
-.linedwrap .codelines {
-	padding-top: 5px;
+	border-right: 1px solid #c0c0c0;
+	margin-right: 10px;
 }
 
 .linedwrap .codelines .lineno {
