@@ -4,7 +4,12 @@ const exec = require('child_process').execFile;
 const fs = require('fs');
 
 function file() {
-    console.log("file")
+    if (document.getElementById('file-menu').style.display == 'none') {
+        document.getElementById('file-menu').style.display = 'block';
+    }
+    else {
+        document.getElementById('file-menu').style.display = 'none';
+    }
 }
 
 function select() {

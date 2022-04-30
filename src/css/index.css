@@ -25,7 +25,7 @@
 }
 
 .menu-button:hover {
-    box-shadow: 0px 0px 5px 1px #3366ff;
+    background: #0883D6;
 }
 
 .menu-button img {
@@ -36,6 +36,39 @@
 .menu-button span {
     display: inline;
     color: white;
+}
+
+.drop-down-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.drop-down-menu_list {
+    width: 150px;
+    height: 97px;
+    display: none;
+    position: absolute;
+    top: 45px;
+    left: 149px;
+    background-color: #0099ff;
+    z-index: 1002;
+    overflow: auto;
+    border-radius: 0px 0px 10px 10px;
+    border-top: 2px solid #0883D6;
+}
+
+.drop-down-menu_list div {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    font-size: 12.5px;
+    padding-left: 13px;
+    color: white;
+    cursor: pointer;
+}
+
+.drop-down-menu_list div:hover {
+    background: #0883D6;
 }
 
 .black_overlay {
@@ -120,7 +153,7 @@
     display: flex;
     border: 1px solid #c0c0c0;
     border-radius: 10px;
-	margin-top: 5px;
+    margin-top: 5px;
 }
 
 .code-view textarea {

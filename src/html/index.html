@@ -18,11 +18,18 @@
 
 <body style="height:100%; overflow:hidden">
 
-    <div class="menu-bar">
+    <div class="menu-bar" onselectstart="return false;">
         <img src="../images/logo.svg" style="margin-left: 15px; margin-right: 15px; width: 120px; height: 45px;" />
-        <div class="menu-button" onclick="file()">
-            <img src="../images/file.svg" />
-            <span>文件</span>
+        <div class="drop-down-menu">
+            <div class="menu-button" onclick="file()">
+                <img src="../images/file.svg" />
+                <span>文件</span>
+            </div>
+            <div id="file-menu" class="drop-down-menu_list">
+                <div>新作品</div>
+                <div>打开作品</div>
+                <div>保存到电脑</div>
+            </div>
         </div>
         <div class="menu-button" onclick="select()">
             <img src="../images/device.svg" />
