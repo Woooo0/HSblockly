@@ -47,5 +47,9 @@ app.on('ready', function () {
         mainWindow = null;
     });
 
+    mainWindow.on('resize', function () {
+        mainWindow.webContents.send('update-lines', 'active')
+    });
+
     Menu.setApplicationMenu(null) 
 });

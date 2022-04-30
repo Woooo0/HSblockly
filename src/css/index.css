@@ -124,13 +124,12 @@
 }
 
 .code-view textarea {
-    width: 100%;
+    width: 400px;
     height: 97%;
     resize: none;
     border: none;
-    border: 1px solid #afafaf;
-    border-radius: 10px;
-    outline-color: #0099ff;
+    outline: none;
+    margin-left: 10px;
 }
 
 .uart-view {

@@ -27,6 +27,8 @@
  *   - 2010.01.06: Initial Release
  *
  */
+
+
 (function ($) {
 
 	$.fn.linedtextarea = function (options) {
@@ -72,15 +74,27 @@
 			linedWrapDiv.prepend("<div class='lines' style='width:30px;'></div>");
 
 			var linesDiv = linedWrapDiv.find(".lines");
-			setInterval(function(){
-				linesDiv.height(textarea.height() + 6);
-			}, 100)
 
+			linesDiv.height(textarea.height() + 2);
 
 			/* Draw the number bar; filling it out where necessary */
 			linesDiv.append("<div class='codelines'></div>");
 			var codeLinesDiv = linesDiv.find(".codelines");
 			lineNo = fillOutLines(codeLinesDiv, linesDiv.height(), 1);
+
+			/* Real-time updates */
+			const { ipcRenderer } = require('electron')
+			var codelines_H = 0;
+			ipcRenderer.on('update-lines', (event, message) => {
+				linesDiv.height(textarea.height() + 2);
+				if (codelines_H < textarea.height()) {
+					codelines_H = textarea.height()
+					setTimeout(function () {
+						$(".codelines").empty();
+						lineNo = fillOutLines(codeLinesDiv, linesDiv.height(), 1);
+					}, 150)
+				}
+			})
 
 			/* Move the textarea to the selected line */
 			if (opts.selectedLine != -1 && !isNaN(opts.selectedLine)) {
@@ -98,8 +112,6 @@
 
 			textarea.width(textareaNewWidth);
 			linedWrapDiv.width(linedWrapDivNewWidth);
-
-
 
 			/* React to the scroll event */
 			textarea.scroll(function (tn) {
