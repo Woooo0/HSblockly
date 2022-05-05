@@ -8,6 +8,7 @@ var deviceType;
 var deviceList = [];
 var path;  //串口号
 var port;  //SerialPort实例
+var programName = './main.py'
 
 function about() {
     document.getElementById('file-menu').style.display = 'none';
@@ -140,7 +141,7 @@ function select_port(options, i = 0) {
         });
     }
     else {
-        path = undefined
+        //path = undefined
         port.close(function (error) {
             if (error) {
                 console.log("关闭端口错误：" + error);
@@ -157,7 +158,7 @@ function uploads() {
     document.getElementById('connect_divice-menu').style.display = 'none';
     if (path != undefined) {
         var output = document.getElementById("output");
-        fs.writeFile('./custom.py', output.value.toString(), function (error) {
+        fs.writeFile(programName, output.value.toString(), function (error) {
             if (error) {
                 alert("生成脚本失败，请重试！")
             } else {
@@ -166,13 +167,15 @@ function uploads() {
         });
 
         var executablePath = "cli.exe";
-        var parameters = [path, "custom.py"];
+        var parameters = [path, programName];
+        select_port(true)
         exec(executablePath, parameters, function (err, data) {
             if (err) {
                 console.error('uploads error: ', err)
                 alert("上传失败，请确定设备是否处于上传模式！")
             } else {
                 alert("上传成功")
+                select_port(false, deviceList.indexOf(path))
             }
         });
     } else {

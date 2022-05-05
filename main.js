@@ -3,8 +3,8 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron')
 const log = require('electron-log');
 log.transports.file.resolvePath = () => "./HSlog.log"
 
-const reloader = require('electron-reloader')
-reloader(module)
+// const reloader = require('electron-reloader')
+// reloader(module)
 
 // 保持一个对于 window 对象的全局引用，不然，当 JavaScript 被 GC，
 // window 会被自动地关闭
