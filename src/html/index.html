@@ -40,7 +40,7 @@
 
         <div class="menu-button" onclick="select()">
             <img src="../images/device.svg" />
-            <span>选择设备</span>
+            <span id="select">选择设备</span>
         </div>
 
         <div id="connect_device" class="drop-down-menu">
@@ -48,9 +48,7 @@
                 <img src="../images/connect.svg" />
                 <span id="connect">连接设备</span>
             </div>
-            <div id="connect_divice-menu" class="device_list">
-                <div id="">设备名称</div>
-            </div>
+            <div id="connect_divice-menu" class="device_list"></div>
         </div>
 
         <div id="uploads" class="menu-button" onclick="uploads()">
@@ -59,23 +57,23 @@
         </div>
     </div>
 
-    <div id="light" class="white_content" onclick="select_device()">
+    <div id="light" class="white_content" onclick="select_device()" onselectstart="return false;">
         <div id="9028b" class="device-message">
-            <img src="../images/9028b.png" />
-            <div class="detail">
-                <span style="margin-bottom: 5px; font-size: 19px; font-weight: 900;">科盟 9028b</span>
-                <span style="font-size: 13px; color: gray;">编程： 安卓、电脑图形化编程</span>
-                <span style="font-size: 13px; color: gray;">适龄： 3~6周岁</span>
-                <span style="font-size: 13px; color: gray;">特点： 简单易用，功能丰富</span>
+            <img id="9028b" src="../images/9028b.png" />
+            <div id="9028b" class="detail">
+                <span id="9028b" style="margin-bottom: 5px; font-size: 19px; font-weight: 900;">科盟 9028b</span>
+                <span id="9028b" style="font-size: 13px; color: gray;">编程： 安卓、电脑图形化编程</span>
+                <span id="9028b" style="font-size: 13px; color: gray;">适龄： 3~6周岁</span>
+                <span id="9028b" style="font-size: 13px; color: gray;">特点： 简单易用，功能丰富</span>
             </div>
         </div>
         <div id="9016" class="device-message">
-            <img src="../images/9016.jpg" />
-            <div class="detail">
-                <span style="margin-bottom: 5px; font-size: 19px; font-weight: 900;">科盟 9016</span>
-                <span style="font-size: 13px; color: gray;">编程： 电脑图形化编程</span>
-                <span style="font-size: 13px; color: gray;">适龄： 6~12周岁</span>
-                <span style="font-size: 13px; color: gray;">特点： 简单易用，功能丰富</span>
+            <img id="9016" src="../images/9016.jpg" />
+            <div id="9016" class="detail">
+                <span id="9016" style="margin-bottom: 5px; font-size: 19px; font-weight: 900;">科盟 9016</span>
+                <span id="9016" style="font-size: 13px; color: gray;">编程： 电脑图形化编程</span>
+                <span id="9016" style="font-size: 13px; color: gray;">适龄： 6~12周岁</span>
+                <span id="9016" style="font-size: 13px; color: gray;">特点： 简单易用，功能丰富</span>
             </div>
         </div>
         <button id="close_popup" type="button">关闭</button>
