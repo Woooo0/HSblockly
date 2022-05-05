@@ -5,7 +5,8 @@ const fs = require('fs');
 
 var deviceType;
 var deviceList = [];
-var path;
+var path;  //串口号
+var port;  //SerialPort实例
 
 function about() {
     document.getElementById('file-menu').style.display = 'none';
@@ -57,77 +58,92 @@ function select_device(evt) {
 function connect_device() {
     document.getElementById('file-menu').style.display = 'none';
     if (deviceType != undefined) {
-        var options = document.getElementById("connect_divice-menu");
-        if (options.style.display == 'none') {
-            options.style.display = 'block';
-        }
-        else {
-            options.style.display = 'none';
-        }
+        var connectFlag = document.getElementById("connect").innerText;
+        if (connectFlag == '连接设备') {
+            var options = document.getElementById("connect_divice-menu");
+            if (options.style.display == 'none') {
+                options.style.display = 'block';
+            }
+            else {
+                options.style.display = 'none';
+            }
 
-        SerialPort.list().then((ports) => {
-            console.log(ports); // 打印串口列表
-            var str = ''
-            for (var i = 0; i < ports.length; i++) {
-                if (ports[i].productId != undefined) {
-                    str += "<div id='' class='ports' onclick='select_port()'> " + ports[i].friendlyName + "</div>";
-                    if (deviceList.indexOf(ports[i].path) == -1) {
-                        deviceList.push(ports[i].path)
+            SerialPort.list().then((ports) => {
+                console.log(ports); // 打印串口列表
+                var str = ''
+                for (var i = 0; i < ports.length; i++) {
+                    if (ports[i].productId != undefined) {
+                        str += "<div id='' class='ports' onclick='select_port()'> " + ports[i].friendlyName + "</div>";
+                        if (deviceList.indexOf(ports[i].path) == -1) {
+                            deviceList.push(ports[i].path)
+                        }
                     }
                 }
-            }
-            console.log(deviceList)
-            options.innerHTML = str
-        }).catch((err) => {
-            console.log(err);
-        });
+                console.log(deviceList)
+                options.innerHTML = str
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+        else {
+            select_port(true)
+        }
     }
     else {
         alert('请选择设备！')
     }
 }
 
-function select_port() {
-    var oDiv = document.getElementsByClassName("ports");
-    for (var i = 0; i < oDiv.length; i++) {
-        (function (i) {
-            oDiv[i].onclick = function () {
-                path = deviceList[i]
-                var port = new SerialPort({
-                    path: deviceList[i],
-                    autoOpen: false,
-                    baudRate: 115200, //波特率
-                    dataBits: 8, //数据位
-                    parity: 'none', //奇偶校验
-                    stopBits: 1, //停止位
-                    flowControl: false,
-                    rtscts: true
-                }, false);
-                port.open(function (error) {
-                    if (error) {
-                        console.log("打开端口错误：" + error);
-                        alert("打开端口失败")
-                    } else {
-                        console.log("打开端口成功，正在监听数据中 ...");
-                        document.getElementById('connect_device').style.display = 'none';
-                        document.getElementById('disconnect').style.display = 'block';
-                        const { DelimiterParser } = require('@serialport/parser-delimiter')
-                        const parser = port.pipe(new DelimiterParser({ delimiter: '\n' }))
-                        parser.on('data', chunk => {
-                            console.log(chunk.toString()); // 打印收到的数据
-                            var uart = document.getElementById("uart");
-                            uart.value += chunk.toString();
-                            uart.scrollTop = uart.scrollHeight;
-                        });
-                    }
-                });
-            }
-        })(i)
+function select_port(options) {
+    if (!options) {
+        var oDiv = document.getElementsByClassName("ports");
+        for (var i = 0; i < oDiv.length; i++) {
+            (function (i) {
+                oDiv[i].onclick = function () {
+                    path = deviceList[i]
+                    port = new SerialPort({
+                        path: deviceList[i],
+                        autoOpen: false,
+                        baudRate: 115200, //波特率
+                        dataBits: 8, //数据位
+                        parity: 'none', //奇偶校验
+                        stopBits: 1, //停止位
+                        flowControl: false,
+                        rtscts: true
+                    }, false);
+                    port.open(function (error) {
+                        if (error) {
+                            console.log("打开端口错误：" + error);
+                            alert("打开端口失败")
+                        } else {
+                            console.log("打开端口成功，正在监听数据中 ...");
+                            document.getElementById('connect_divice-menu').style.display = 'none';
+                            document.getElementById('connect').innerHTML = '断开连接'
+                            const { DelimiterParser } = require('@serialport/parser-delimiter')
+                            const parser = port.pipe(new DelimiterParser({ delimiter: '\n' }))
+                            parser.on('data', chunk => {
+                                console.log(chunk.toString()); // 打印收到的数据
+                                var uart = document.getElementById("uart");
+                                uart.value += chunk.toString();
+                                uart.scrollTop = uart.scrollHeight;
+                            });
+                        }
+                    });
+                }
+            })(i)
+        }
     }
-}
-
-function disconnect() {
-    console.log("disconnect")
+    else {
+        port.close(function (error) {
+            if (error) {
+                console.log("关闭端口错误：" + error);
+                alert("关闭端口失败")
+            } else {
+                console.log("关闭端口成功");
+                document.getElementById('connect').innerHTML = '连接设备'
+            }
+        });
+    }
 }
 
 function uploads() {
