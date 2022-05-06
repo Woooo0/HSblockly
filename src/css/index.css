@@ -231,10 +231,12 @@
 }
 
 .uart-view textarea {
-    height: 86%;
-    width: 375px;
+    height: 88%;
+    width: 97%;
     resize: none;
     border: none;
+    margin-top: 6px;
+    margin-left: 6px;
 }
 
 .uart-options {
@@ -252,8 +254,20 @@
     overflow: auto;
     border-radius: 0px 10px 0px 10px;
     border: 1px solid #e6e6e6;
-
 }
+
+.uart-options div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.uart-options div:active {
+    background: #dbdbdb;
+  }
 
 .uart-options img {
     width: 20px;
@@ -262,14 +276,14 @@
 
 .uart-input {
     width: 100%;
-    height: 45px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-top: 1px solid #e6e6e6;
 }
 
-.uart-view input {
+.uart-input input {
     height: 24px;
     width: 75%;
     background: #e9f1fc;

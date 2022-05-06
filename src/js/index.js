@@ -217,7 +217,13 @@ function uart_options(object) {
         console.log("clear")
     }
     else if (object == 1) {
-        console.log("paused")
+        var paused_src = document.getElementById("paused")
+        if (paused_src.getAttribute("src") == '../images/paused.svg') {
+            paused_src.src = '../images/play.svg'
+        }
+        else {
+            paused_src.src = '../images/paused.svg'
+        }
     }
     else if (object == 2) {
         console.log("send")

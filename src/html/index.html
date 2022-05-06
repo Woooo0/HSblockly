@@ -91,9 +91,13 @@
             </div>
             <div class="uart-view">
                 <textarea id="uart" disabled="disabled"></textarea>
-                <div class="uart-options">
-                    <img class="uart_options" src="../images/clear.svg" />
-                    <img class="uart_options" src="../images/paused.svg" />
+                <div class="uart-options" onselectstart="return false;">
+                    <div class="uart_button">
+                        <img src="../images/clear.svg" />
+                    </div>
+                    <div class="uart_button" style="border: none;">
+                        <img id="paused" src="../images/paused.svg" />
+                    </div>
                 </div>
                 <div class="uart-input">
                     <input type="text" name="firstname" value="">
@@ -154,7 +158,7 @@
             $(".pop").hide();
             $(".code-text").linedtextarea();
         });
-        $(".uart_options").on('click', function (e) {
+        $(".uart_button").on('click', function (e) {
             uart_options($(this).index())
         });
     </script>
