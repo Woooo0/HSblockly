@@ -10,6 +10,30 @@ var path;  //串口号
 var port;  //SerialPort实例
 var programName = './main.py'
 
+function popup(text, type, delay) {
+    var color;
+    if (type == 'info') {
+        color = "#0099ff"
+    }
+    else if (type == 'success') {
+        color = "#0fbd8c"
+    }
+    else if (type == 'alarm') {
+        color = "#ff6600"
+    }
+    else if (type == 'error') {
+        color = "#ff3300"
+    }
+    $("#pop_text").text(text)
+    $(".pop").attr("style", "background-color: " + color + ";");
+    $(".pop").fadeIn(50);
+    if (type != 'info') {
+        setTimeout(function () {
+            $(".pop").slideUp(delay)
+        }, 1000)
+    }
+}
+
 function about() {
     document.getElementById('file-menu').style.display = 'none';
     document.getElementById('connect_divice-menu').style.display = 'none';
@@ -108,7 +132,7 @@ function connect_device() {
         }
     }
     else {
-        alert('请选择设备！')
+        popup("请选择设备！", "alarm", undefined)
     }
 }
 
@@ -141,13 +165,12 @@ function select_port(options, i = 0) {
         });
     }
     else {
-        //path = undefined
         port.close(function (error) {
             if (error) {
                 console.log("关闭端口错误：" + error);
-                alert("关闭端口失败")
             } else {
                 document.getElementById('connect').innerHTML = '连接设备'
+                path = undefined
             }
         });
     }
@@ -157,10 +180,11 @@ function uploads() {
     document.getElementById('file-menu').style.display = 'none';
     document.getElementById('connect_divice-menu').style.display = 'none';
     if (path != undefined) {
+        popup("上传中，请稍候...", "info")
         var output = document.getElementById("output");
         fs.writeFile(programName, output.value.toString(), function (error) {
             if (error) {
-                alert("生成脚本失败，请重试！")
+                alert("生成脚本失败，请重试或重启软件！")
             } else {
                 console.log('wite script successful')
             }
@@ -168,17 +192,34 @@ function uploads() {
 
         var executablePath = "cli.exe";
         var parameters = [path, programName];
+        var index = deviceList.indexOf(path)
         select_port(true)
         exec(executablePath, parameters, function (err, data) {
             if (err) {
                 console.error('uploads error: ', err)
-                alert("上传失败，请确定设备是否处于上传模式！")
+                popup("上传失败", "error", 200)
             } else {
-                alert("上传成功")
-                select_port(false, deviceList.indexOf(path))
+                select_port(false, index)
+                popup("上传成功", "success", 200)
             }
         });
     } else {
-        alert("未连接设备！")
+        popup("未连接设备！", "alarm", undefined)
+    }
+}
+
+function uart_send() {
+    uart_options(2)
+}
+
+function uart_options(object) {
+    if (object == 0) {
+        console.log("clear")
+    }
+    else if (object == 1) {
+        console.log("paused")
+    }
+    else if (object == 2) {
+        console.log("send")
     }
 }

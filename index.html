@@ -1,35 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-	<meta charset="UTF-8">
-	<title>判断点击的是哪个div</title>
-	<script src="/src/js/jquery-1.11.0.min.js" type="text/javascript"></script>
-	<style>
-		.node {
-			width: 200px;
-			height: 50px;
-			line-height: 50px;
-			background: #ed145b;
-			margin-bottom: 10px;
-			text-align: center;
-			color: #fff;
-			cursor: pointer;
-		}
-	</style>
+	<title></title>
+	<script type="text/javascript" src="src/js/jquery-1.11.0.min.js"></script>
 </head>
+<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	#pop {
+		width: 150px;
+		height: 50px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: #FFD700;
+		position: absolute;
+		margin-left: 50%;
+		border-radius: 10px;
+		top: 150px;
+		left: -100px;
+	}
+</style>
 
 <body>
-	<div class="node">点我啊</div>
-	<div class="node">点我啊</div>
-	<div class="node">点我啊</div>
-	<div class="node">点我啊</div>
-	<div class="node">点我啊</div>
-	<script>
-		$('.node').on('click', function (e) {
-			console.log($(this).index())
-		});
-	</script>
+	<div id="pop">
+		<span id="pop_text" style="color: white;">上传中，请稍候 ...</span>
+	</div>
 </body>
+<script type="text/javascript">
+	setTimeout(function () {
+		$("div").attr("style","background-color: #43CD80;");
+		$("#pop_text").text("上传成功")
+		$("#pop").slideUp(500)
+	}, 1000)
+
+		// var pop_div = $("#pop")
+		// pop_div.animate({
+		// 	top:'-=100px',
+		// 	opacity:'0'
+		// 	});
+		// $('#popbg').animate({
+		//$('#pop').fadeOut(1000);
+		// 	opacity:'0'
+		// })
+</script>
 
 </html>
