@@ -1,9 +1,8 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron')
-
+const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron')
 const log = require('electron-log');
-log.transports.file.resolvePath = () => "./HSlog.log"
-
 const reloader = require('electron-reloader')
+
+log.transports.file.resolvePath = () => "./HSlog.log"
 reloader(module)
 
 // 保持一个对于 window 对象的全局引用，不然，当 JavaScript 被 GC，
@@ -24,8 +23,9 @@ app.on('window-all-closed', function () {
 app.on('ready', function () {
     // 创建浏览器窗口。
     mainWindow = new BrowserWindow({
-        width: 1000,
+        width: 1300,
         height: 800,
+        //icon: path.join(__dirname, './icon/KmEducationDesktop.ico'),
 
         webPreferences: {
             nodeIntegration: true,
@@ -40,10 +40,25 @@ app.on('ready', function () {
     mainWindow.openDevTools();
 
     // 当 window 被关闭，这个事件会被发出
-    mainWindow.on('closed', function () {
+    mainWindow.on('close', function (e) {
         // 取消引用 window 对象，如果你的应用支持多窗口的话，
         // 通常会把多个 window 对象存放在一个数组里面，
         // 但这次不是。
+        e.preventDefault()
+        dialog.showMessageBox({
+            type: "info",
+            title: '提醒',
+            message: '确定退出软件吗？ 未保存的作品将丢失！',
+            buttons: ['确定', '取消']
+        }).then(result => {
+            console.log(result)
+            if (!result.response) {
+                app.exit();
+            }
+        })
+    });
+
+    mainWindow.on('closed', function () {
         mainWindow = null;
     });
 
@@ -51,5 +66,95 @@ app.on('ready', function () {
         mainWindow.webContents.send('update-lines', 'active')
     });
 
-    Menu.setApplicationMenu(null) 
+    // 菜单模板
+    const menuTemplate = [
+        {
+            label: '撤消',
+            // submenu: [
+            //     { role: 'undo' },
+            //     { role: 'redo' },
+            //     { type: 'separator' },
+            //     { role: 'cut' },
+            //     { role: 'copy' },
+            //     { role: 'paste' },
+            //     { role: 'pasteandmatchstyle' },
+            //     { role: 'delete' },
+            //     { role: 'selectall' }
+            // ]
+        },
+        {
+            label: '清空工作区',
+            click() {
+                mainWindow.webContents.send('main_child', 'cleared');
+            }
+        }
+    ];
+
+    // 构建菜单项
+    const menu = Menu.buildFromTemplate(menuTemplate);
+    ipcMain.on('child_main', (event, arg) => {
+        var filters = [{ name: 'Program File', extensions: ['ke'] }]
+        if (arg == 0) {
+            var newWindow
+            newWindow = new BrowserWindow({
+                width: 1300,
+                height: 800,
+                webPreferences: {
+                    nodeIntegration: true,
+                    contextIsolation: false
+                }
+            });
+            newWindow.loadURL('file://' + __dirname + '/src/html/index.html');
+            newWindow.on('close', function (e) {
+                e.preventDefault()
+                dialog.showMessageBox({
+                    type: "info",
+                    title: '提醒',
+                    message: '确定退出软件吗？ 未保存的作品将丢失！',
+                    buttons: ['确定', '取消']
+                }).then(result => {
+                    console.log(result)
+                    if (!result.response) {
+                        app.exit();
+                    }
+                })
+            });
+            newWindow.on('closed', function () {
+                newWindow = null;
+            });
+            newWindow.on('resize', function () {
+                newWindow.webContents.send('update-lines', 'active')
+            });
+        }
+        else if (arg == 1) {
+            dialog.showOpenDialog({
+                title: '请选择作品',
+                properties: ['openFile'],
+                filters: filters,
+                buttonLabel: '打开作品'
+            }).then(result => {
+                event.reply('file_menu', result)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+        else if (arg == 2) {
+            dialog.showSaveDialog({
+                title: '保存作品',
+                filters: filters,
+            }).then(result => {
+                event.reply('file_menu', result)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+        else {
+            //右键菜单位置
+            menu.popup({
+                x: arg.x,
+                y: arg.y
+            });
+        }
+    });
+    Menu.setApplicationMenu(null)
 });

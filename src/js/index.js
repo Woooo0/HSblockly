@@ -1,5 +1,5 @@
 const { SerialPort } = require('serialport')
-const { shell } = require('electron')
+const { shell, ipcRenderer } = require('electron')
 const exec = require('child_process').execFile;
 const fs = require('fs');
 const { DelimiterParser } = require('@serialport/parser-delimiter')
@@ -25,7 +25,7 @@ function popup(text, type, delay) {
         color = "#ff3300"
     }
     $("#pop_text").text(text)
-    $(".pop").attr("style", "background-color: " + color + ";");
+    $(".pop").attr("style", "background-color: " + color + ";")
     $(".pop").fadeIn(50);
     if (type != 'info') {
         setTimeout(function () {
@@ -35,65 +35,65 @@ function popup(text, type, delay) {
 }
 
 function about() {
-    document.getElementById('file-menu').style.display = 'none';
-    document.getElementById('connect_divice-menu').style.display = 'none';
+    document.getElementById('file-menu').style.display = 'none'
+    document.getElementById('connect_divice-menu').style.display = 'none'
     shell.openExternal('http://www.kmmaker.com')
 }
 
 function file() {
-    document.getElementById('connect_divice-menu').style.display = 'none';
-    var options = document.getElementById("file-menu");
+    document.getElementById('connect_divice-menu').style.display = 'none'
+    var options = document.getElementById("file-menu")
     if (options.style.display != 'block') {
-        options.style.display = 'block';
+        options.style.display = 'block'
     }
     else {
-        options.style.display = 'none';
+        options.style.display = 'none'
     }
 }
 
 function select() {
-    document.getElementById('file-menu').style.display = 'none';
-    document.getElementById('connect_divice-menu').style.display = 'none';
-    document.getElementById('light').style.display = 'block';
-    document.getElementById('fade').style.display = 'block';
+    document.getElementById('file-menu').style.display = 'none'
+    document.getElementById('connect_divice-menu').style.display = 'none'
+    document.getElementById('light').style.display = 'block'
+    document.getElementById('fade').style.display = 'block'
 }
 
 function select_device(evt) {
-    document.getElementById('file-menu').style.display = 'none';
-    document.getElementById('connect_divice-menu').style.display = 'none';
-    evt = evt || window.event;
-    var obj = evt.target || evt.srcElement;
+    document.getElementById('file-menu').style.display = 'none'
+    document.getElementById('connect_divice-menu').style.display = 'none'
+    evt = evt || window.event
+    var obj = evt.target || evt.srcElement
     switch (obj.id) {
         case "9028b":
             deviceType = '9028b'
-            document.getElementById('light').style.display = 'none';
-            document.getElementById('fade').style.display = 'none';
+            document.getElementById('light').style.display = 'none'
+            document.getElementById('fade').style.display = 'none'
             document.getElementById('select').innerHTML = '9028b'
             break;
         case "9016":
             deviceType = '9016'
-            document.getElementById('light').style.display = 'none';
-            document.getElementById('fade').style.display = 'none';
+            document.getElementById('light').style.display = 'none'
+            document.getElementById('fade').style.display = 'none'
             document.getElementById('select').innerHTML = '9016'
-            break;
+            break
         case "close_popup":
-            document.getElementById('light').style.display = 'none';
-            document.getElementById('fade').style.display = 'none';
-            break;
+            document.getElementById('light').style.display = 'none'
+            document.getElementById('fade').style.display = 'none'
+            break
     }
 }
 
 function connect_device() {
-    document.getElementById('file-menu').style.display = 'none';
+    document.getElementById('file-menu').style.display = 'none'
     if (deviceType != undefined) {
-        var connectFlag = document.getElementById("connect").innerText;
+        var connectFlag = document.getElementById("connect").innerText
         if (connectFlag == '连接设备') {
             var options = document.getElementById("connect_divice-menu");
             if (options.style.display != 'block') {
-                options.style.display = 'block';
+                options.style.display = 'block'
             }
             else {
-                options.style.display = 'none';
+                options.style.display = 'none'
             }
 
             SerialPort.list().then((ports) => {
@@ -106,17 +106,17 @@ function connect_device() {
                     productId = '7522'
                 }
                 var str = ''
-                deviceList = [];
+                deviceList = []
                 for (var i = 0; i < ports.length; i++) {
                     if (ports[i].productId == productId) {
-                        str += "<div class='ports'> " + ports[i].friendlyName + "</div>";
+                        str += "<div class='ports'> " + ports[i].friendlyName + "</div>"
                         if (deviceList.indexOf(ports[i].path) == -1) {
                             deviceList.push(ports[i].path)
                         }
                     }
                 }
                 if (deviceList.length == 0) {
-                    str += "<div class='ports'>未发现可用设备</div>";
+                    str += "<div class='ports'>未发现可用设备</div>"
                 }
                 console.log(deviceList)
                 options.innerHTML = str
@@ -124,7 +124,7 @@ function connect_device() {
                     select_port(false, $(this).index())
                 });
             }).catch((err) => {
-                console.log(err);
+                console.log(err)
             });
         }
         else {
@@ -153,16 +153,16 @@ function select_port(options, i = 0) {
             if (error) {
                 alert("打开端口失败，请检查是否被其它程序占用！")
             } else {
-                document.getElementById('connect_divice-menu').style.display = 'none';
+                document.getElementById('connect_divice-menu').style.display = 'none'
                 document.getElementById('connect').innerHTML = '断开连接'
                 const parser = port.pipe(new DelimiterParser({ delimiter: '\n' }))
                 parser.on('data', chunk => {
-                    var uart = document.getElementById("uart");
-                    uart.value += chunk.toString();
-                    uart.scrollTop = uart.scrollHeight;
+                    var uart = document.getElementById("uart")
+                    uart.value += chunk.toString()
+                    uart.scrollTop = uart.scrollHeight
                 });
             }
-        });
+        })
     }
     else {
         port.close(function (error) {
@@ -172,16 +172,16 @@ function select_port(options, i = 0) {
                 document.getElementById('connect').innerHTML = '连接设备'
                 path = undefined
             }
-        });
+        })
     }
 }
 
 function uploads() {
-    document.getElementById('file-menu').style.display = 'none';
-    document.getElementById('connect_divice-menu').style.display = 'none';
+    document.getElementById('file-menu').style.display = 'none'
+    document.getElementById('connect_divice-menu').style.display = 'none'
     if (path != undefined) {
         popup("上传中，请稍候...", "info")
-        var output = document.getElementById("output");
+        var output = document.getElementById("output")
         fs.writeFile(programName, output.value.toString(), function (error) {
             if (error) {
                 alert("生成脚本失败，请重试或重启软件！")
@@ -190,8 +190,8 @@ function uploads() {
             }
         });
 
-        var executablePath = "cli.exe";
-        var parameters = [path, programName];
+        var executablePath = "cli.exe"
+        var parameters = [path, programName]
         var index = deviceList.indexOf(path)
         select_port(true)
         exec(executablePath, parameters, function (err, data) {
@@ -202,7 +202,7 @@ function uploads() {
                 select_port(false, index)
                 popup("上传成功", "success", 200)
             }
-        });
+        })
     } else {
         popup("未连接设备！", "alarm", undefined)
     }
@@ -229,3 +229,72 @@ function uart_options(object) {
         console.log("send")
     }
 }
+
+function main_init() {
+    const { ipcRenderer } = require('electron')
+    //生成模块列表区域
+    var blocklyDiv = document.getElementById('blocklyDiv')
+    var workspace = Blockly.inject(blocklyDiv, {
+        media: '../../node_modules/blockly/media/',
+        toolbox: document.getElementById('toolbox'),
+        zoom: {
+            controls: true,
+            wheel: true,
+            startScale: 1.0,
+            maxScale: 3,
+            minScale: 0.5,
+            scaleSpeed: 1.05
+        },
+        trashcan: true,
+        scrollBar: true
+    });
+
+    //调整工作区域大小
+    var onresize = function (e) {
+        Blockly.svgResize(workspace)
+    };
+    //注册resize处理函数
+    window.addEventListener('resize', onresize)
+    Blockly.svgResize(workspace)
+
+    function myUpdateFunction(event) {
+        var code = Blockly.Python.workspaceToCode(workspace)
+        var output = document.getElementById("output")
+        output.value = code
+    }
+    workspace.addChangeListener(myUpdateFunction)
+
+    ipcRenderer.on('main_child', (event, arg) => {
+        if (arg == 'cleared') {
+            workspace.clear()
+        }
+    })
+
+    ipcRenderer.on('file_menu', (event, arg) => {
+        document.getElementById('file-menu').style.display = 'none'
+        console.log(arg)
+    })
+
+    $(function () {
+        $(".pop").hide();
+        $(".code-text").linedtextarea()
+    });
+    $(".uart_button").on('click', function (e) {
+        uart_options($(this).index())
+    });
+    $(".file_options").on('click', function (e) {
+        ipcRenderer.send('child_main', $(this).index())
+    });
+}
+
+//const blocklyDiv = document.querySelector('output')
+
+window.addEventListener('contextmenu', event => {
+    event.preventDefault()
+    const client = {
+        x: event.clientX,
+        y: event.clientY
+    }
+    // 把鼠标位置发送到主进程
+    ipcRenderer.send('child_main', client)
+})

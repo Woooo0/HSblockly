@@ -14,9 +14,9 @@
         "electron-builder": "^22.14.13"
     },
     "dependencies": {
+        "blockly": "^7.20211209.5",
         "electron-log": "^4.4.6",
-        "serialport": "^10.4.0",
-        "blockly": "^7.20211209.4",
-        "electron-reloader": "^1.2.3"
+        "electron-reloader": "^1.2.3",
+        "serialport": "^10.4.0"
     }
 }

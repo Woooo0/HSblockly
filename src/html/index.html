@@ -11,7 +11,7 @@
     <script> if (typeof module === 'object') { window.module = module; module = undefined; }</script>
     <script src="../js/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="../js/jquery-linedtextarea.js"></script>
-    <script> if (window.module) module = window.moudle;</script>
+    <script> if (window.module) module = window.moudle</script>
     <link href="../css/jquery-linedtextarea.css" type="text/css" rel="stylesheet" />
     <link rel="stylesheet" href="../css/index.css">
 </head>
@@ -31,9 +31,9 @@
                 <span>文件</span>
             </div>
             <div id="file-menu" class="drop-down-menu_list">
-                <div>新作品</div>
-                <div>打开作品</div>
-                <div>保存到电脑</div>
+                <div class="file_options">新作品</div>
+                <div class="file_options">打开作品</div>
+                <div class="file_options">保存到电脑</div>
             </div>
         </div>
 
@@ -154,48 +154,7 @@
         </category>
     </xml>
     <script>
-        $(function () {
-            $(".pop").hide();
-            $(".code-text").linedtextarea();
-        });
-        $(".uart_button").on('click', function (e) {
-            uart_options($(this).index())
-        });
-    </script>
-
-    <script>
-        const { ipcRenderer } = require('electron')
-        //生成模块列表区域
-        var blocklyDiv = document.getElementById('blocklyDiv');
-        var workspace = Blockly.inject(blocklyDiv, {
-            media: '../../node_modules/blockly/media/',
-            toolbox: document.getElementById('toolbox'),
-            zoom: {
-                controls: true,
-                wheel: true,
-                startScale: 1.0,
-                maxScale: 3,
-                minScale: 0.5,
-                scaleSpeed: 1.05
-            },
-            trashcan: true,
-            scrollBar: true
-        });
-
-        //调整工作区域大小
-        var onresize = function (e) {
-            Blockly.svgResize(workspace);
-        };
-        //注册resize处理函数
-        window.addEventListener('resize', onresize);
-        Blockly.svgResize(workspace);
-
-        function myUpdateFunction(event) {
-            var code = Blockly.Python.workspaceToCode(workspace);
-            var output = document.getElementById("output");
-            output.value = code;
-        }
-        workspace.addChangeListener(myUpdateFunction);
+        main_init()
     </script>
 </body>
 
