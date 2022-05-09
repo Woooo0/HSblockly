@@ -17,6 +17,56 @@
     overflow: auto;
 }
 
+.close-pop {
+    width: 300px;
+    height: 160px;
+    border: 1px solid #e6e6e6;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    z-index: 1002;
+    overflow: auto;
+}
+
+.title {
+    width: 290px;
+    height: 35px;
+    background-color: #0099ff;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    color: white;
+}
+
+.content {
+    width: 80%;
+    height: 125px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-button {
+    width: 61%;
+    height: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 32px;
+}
+
+.content-button button {
+    width: 50px;
+    height: 25px;
+}
+
 .menu-bar {
     width: 100%;
     min-width: 800px;
@@ -271,7 +321,7 @@
 
 .uart-options div:active {
     background: #dbdbdb;
-  }
+}
 
 .uart-options img {
     width: 20px;

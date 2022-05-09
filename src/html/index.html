@@ -83,6 +83,20 @@
         <span id="pop_text" style="color: white;">上传中，请稍候 ...</span>
     </div>
 
+    <div class="close-pop" id="close-pop" onclick="close_win()" onselectstart="return false;">
+        <div class="title">科盟科教</div>
+        <div class="content">
+            <div style="display: flex; align-items: center;">
+                <img src="../images/warning.svg" style="width: 40px; height: 40px;" />
+                <span style="margin-left: 20px;">确定退出软件吗？ 未保存的作品将丢失！</span>
+            </div>
+            <div class="content-button">
+                <button id="true">是</button>
+                <button id="false">否</button>
+            </div>
+        </div>
+    </div>
+
     <div class="master">
         <div id="blocklyDiv" style="height: 100%; width: 80%"></div>
         <div class="side">

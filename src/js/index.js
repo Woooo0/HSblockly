@@ -35,15 +35,12 @@ function popup(text, type, delay) {
 }
 
 function about() {
-    document.getElementById('file-menu').style.display = 'none'
-    document.getElementById('connect_divice-menu').style.display = 'none'
     shell.openExternal('http://www.kmmaker.com')
 }
 
 function file() {
-    document.getElementById('connect_divice-menu').style.display = 'none'
     var options = document.getElementById("file-menu")
-    if (options.style.display != 'block') {
+    if (options.style.display == 'none') {
         options.style.display = 'block'
     }
     else {
@@ -52,15 +49,11 @@ function file() {
 }
 
 function select() {
-    document.getElementById('file-menu').style.display = 'none'
-    document.getElementById('connect_divice-menu').style.display = 'none'
     document.getElementById('light').style.display = 'block'
     document.getElementById('fade').style.display = 'block'
 }
 
 function select_device(evt) {
-    document.getElementById('file-menu').style.display = 'none'
-    document.getElementById('connect_divice-menu').style.display = 'none'
     evt = evt || window.event
     var obj = evt.target || evt.srcElement
     switch (obj.id) {
@@ -84,7 +77,6 @@ function select_device(evt) {
 }
 
 function connect_device() {
-    document.getElementById('file-menu').style.display = 'none'
     if (deviceType != undefined) {
         var connectFlag = document.getElementById("connect").innerText
         if (connectFlag == '连接设备') {
@@ -151,9 +143,10 @@ function select_port(options, i = 0) {
         }, false);
         port.open(function (error) {
             if (error) {
+                document.getElementById("connect_divice-menu").style.display = 'none'
                 alert("打开端口失败，请检查是否被其它程序占用！")
             } else {
-                document.getElementById('connect_divice-menu').style.display = 'none'
+                document.getElementById("connect_divice-menu").style.display = 'none'
                 document.getElementById('connect').innerHTML = '断开连接'
                 const parser = port.pipe(new DelimiterParser({ delimiter: '\n' }))
                 parser.on('data', chunk => {
@@ -177,8 +170,6 @@ function select_port(options, i = 0) {
 }
 
 function uploads() {
-    document.getElementById('file-menu').style.display = 'none'
-    document.getElementById('connect_divice-menu').style.display = 'none'
     if (path != undefined) {
         popup("上传中，请稍候...", "info")
         var output = document.getElementById("output")
@@ -230,8 +221,20 @@ function uart_options(object) {
     }
 }
 
+function close_win(evt) {
+    evt = evt || window.event
+    var obj = evt.target || evt.srcElement
+    switch (obj.id) {
+        case "true":
+            ipcRenderer.send('close_win', "close")
+            break
+        case "false":
+            $(".close-pop").hide();
+            break
+    }
+}
+
 function main_init() {
-    const { ipcRenderer } = require('electron')
     //生成模块列表区域
     var blocklyDiv = document.getElementById('blocklyDiv')
     var workspace = Blockly.inject(blocklyDiv, {
@@ -258,6 +261,8 @@ function main_init() {
     Blockly.svgResize(workspace)
 
     function myUpdateFunction(event) {
+        document.getElementById("file-menu").style.display = 'none'
+        document.getElementById("connect_divice-menu").style.display = 'none'
         var code = Blockly.Python.workspaceToCode(workspace)
         var output = document.getElementById("output")
         output.value = code
@@ -268,23 +273,35 @@ function main_init() {
         if (arg == 'cleared') {
             workspace.clear()
         }
+        else if (arg == 'close') {
+            $(".close-pop").fadeIn(500);
+        }
     })
 
     ipcRenderer.on('file_menu', (event, arg) => {
-        document.getElementById('file-menu').style.display = 'none'
         console.log(arg)
     })
-
     $(function () {
-        $(".pop").hide();
+        $(".pop, .close-pop").hide();
         $(".code-text").linedtextarea()
-    });
+    })
     $(".uart_button").on('click', function (e) {
         uart_options($(this).index())
-    });
+    })
     $(".file_options").on('click', function (e) {
         ipcRenderer.send('child_main', $(this).index())
-    });
+        document.getElementById("file-menu").style.display = 'none'
+    })
+    $(".master, .menu-button").mousedown(function () {
+        var file_menu = document.getElementById('file-menu')
+        var connect_divice_menu = document.getElementById('connect_divice-menu')
+        if (file_menu.style.display != 'none') {
+            file_menu.style.display = 'none'
+        }
+        if (connect_divice_menu.style.display != 'none') {
+            connect_divice_menu.style.display = 'none'
+        }
+    })
 }
 
 //const blocklyDiv = document.querySelector('output')

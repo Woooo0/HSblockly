@@ -8,6 +8,7 @@ reloader(module)
 // 保持一个对于 window 对象的全局引用，不然，当 JavaScript 被 GC，
 // window 会被自动地关闭
 var mainWindow = null;
+var winObject = null;
 
 // 当所有窗口被关闭了，退出。
 app.on('window-all-closed', function () {
@@ -17,6 +18,10 @@ app.on('window-all-closed', function () {
         app.quit();
     }
 });
+
+ipcMain.on('close_win', (event, arg) => {
+    winObject.destroy()
+})
 
 // 当 Electron 完成了初始化并且准备创建浏览器窗口的时候
 // 这个方法就被调用
@@ -39,26 +44,18 @@ app.on('ready', function () {
     // 打开开发工具
     mainWindow.openDevTools();
 
-    // 当 window 被关闭，这个事件会被发出
     mainWindow.on('close', function (e) {
+        e.preventDefault()
+        mainWindow.webContents.send('main_child', 'close');
+        winObject = mainWindow
+    });
+
+    // 当 window 被关闭，这个事件会被发出
+    mainWindow.on('closed', function () {
         // 取消引用 window 对象，如果你的应用支持多窗口的话，
         // 通常会把多个 window 对象存放在一个数组里面，
         // 但这次不是。
-        e.preventDefault()
-        dialog.showMessageBox({
-            type: "info",
-            title: '提醒',
-            message: '确定退出软件吗？ 未保存的作品将丢失！',
-            buttons: ['确定', '取消']
-        }).then(result => {
-            console.log(result)
-            if (!result.response) {
-                app.exit();
-            }
-        })
-    });
-
-    mainWindow.on('closed', function () {
+        winObject = null;
         mainWindow = null;
     });
 
@@ -95,7 +92,7 @@ app.on('ready', function () {
     ipcMain.on('child_main', (event, arg) => {
         var filters = [{ name: 'Program File', extensions: ['ke'] }]
         if (arg == 0) {
-            var newWindow
+            var newWindow = null
             newWindow = new BrowserWindow({
                 width: 1300,
                 height: 800,
@@ -103,28 +100,20 @@ app.on('ready', function () {
                     nodeIntegration: true,
                     contextIsolation: false
                 }
-            });
+            })
             newWindow.loadURL('file://' + __dirname + '/src/html/index.html');
             newWindow.on('close', function (e) {
                 e.preventDefault()
-                dialog.showMessageBox({
-                    type: "info",
-                    title: '提醒',
-                    message: '确定退出软件吗？ 未保存的作品将丢失！',
-                    buttons: ['确定', '取消']
-                }).then(result => {
-                    console.log(result)
-                    if (!result.response) {
-                        app.exit();
-                    }
-                })
-            });
+                newWindow.webContents.send('main_child', 'close');
+                winObject = newWindow
+            })
             newWindow.on('closed', function () {
-                newWindow = null;
-            });
+                winObject = null;
+                newWindow = null
+            })
             newWindow.on('resize', function () {
                 newWindow.webContents.send('update-lines', 'active')
-            });
+            })
         }
         else if (arg == 1) {
             dialog.showOpenDialog({
