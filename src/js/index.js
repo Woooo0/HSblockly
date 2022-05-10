@@ -278,9 +278,29 @@ function main_init() {
         }
     })
 
-    ipcRenderer.on('file_menu', (event, arg) => {
+    ipcRenderer.on('save_file', (event, arg) => {
         console.log(arg)
-        alert(arg)
+        var filePath = arg.filePath
+        const xml = Blockly.Xml.workspaceToDom(workspace);
+        const xmlText = Blockly.Xml.domToText(xml);
+        fs.writeFile(filePath, xmlText, function (error) {
+            if (error) {
+                alert("保存失败，请重试或重启软件！")
+            } else {
+                console.log('save successful')
+            }
+        });
+    })
+
+    ipcRenderer.on('open_file', (event, arg) => {
+        var filePaths = arg.filePaths[0]
+        fs.readFile(filePaths, (err, data) => {
+            if (err) {
+                alert('文件打开失败,请重试或重启软件！')
+            }
+            const xml = Blockly.Xml.textToDom(data);
+            Blockly.Xml.domToWorkspace(xml, workspace);
+        })
     })
 
     $(function () {
@@ -295,7 +315,6 @@ function main_init() {
         ipcRenderer.send('child_main', $(this).index())
         document.getElementById("file-menu").style.display = 'none'
     })
-    var winObject;
     $(".master, .menu-button").mousedown(function () {
         var file_menu = document.getElementById('file-menu')
         var connect_divice_menu = document.getElementById('connect_divice-menu')

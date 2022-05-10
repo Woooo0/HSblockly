@@ -1,4 +1,1 @@
-if False:
-  pass
-else:
-  pass
+'我是黄盛胜'

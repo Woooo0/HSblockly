@@ -117,7 +117,7 @@ app.on('ready', function () {
                 filters: filters,
                 buttonLabel: '打开作品'
             }).then(result => {
-                event.reply('file_menu', result)
+                event.reply('open_file', result)
             }).catch(err => {
                 console.log(err)
             })
@@ -127,7 +127,7 @@ app.on('ready', function () {
                 title: '保存作品',
                 filters: filters,
             }).then(result => {
-                event.reply('file_menu', result)
+                event.reply('save_file', result)
             }).catch(err => {
                 console.log(err)
             })
