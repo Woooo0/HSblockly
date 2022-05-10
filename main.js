@@ -3,12 +3,11 @@ const log = require('electron-log');
 const reloader = require('electron-reloader')
 
 log.transports.file.resolvePath = () => "./HSlog.log"
-reloader(module)
+//reloader(module)
 
 // 保持一个对于 window 对象的全局引用，不然，当 JavaScript 被 GC，
 // window 会被自动地关闭
 var mainWindow = null;
-var winObject = null;
 
 // 当所有窗口被关闭了，退出。
 app.on('window-all-closed', function () {
@@ -20,7 +19,7 @@ app.on('window-all-closed', function () {
 });
 
 ipcMain.on('close_win', (event, arg) => {
-    winObject.destroy()
+    BrowserWindow.getFocusedWindow().destroy()
 })
 
 // 当 Electron 完成了初始化并且准备创建浏览器窗口的时候
@@ -36,32 +35,30 @@ app.on('ready', function () {
             nodeIntegration: true,
             contextIsolation: false
         }
-    });
+    })
 
     // 加载应用的 index.html
-    mainWindow.loadURL('file://' + __dirname + '/src/html/index.html');
+    mainWindow.loadURL('file://' + __dirname + '/src/html/index.html')
 
     // 打开开发工具
     mainWindow.openDevTools();
 
     mainWindow.on('close', function (e) {
         e.preventDefault()
-        mainWindow.webContents.send('main_child', 'close');
-        winObject = mainWindow
-    });
+        BrowserWindow.getFocusedWindow().webContents.send('main_child', "close")
+    })
 
     // 当 window 被关闭，这个事件会被发出
     mainWindow.on('closed', function () {
         // 取消引用 window 对象，如果你的应用支持多窗口的话，
         // 通常会把多个 window 对象存放在一个数组里面，
         // 但这次不是。
-        winObject = null;
         mainWindow = null;
-    });
+    })
 
     mainWindow.on('resize', function () {
         mainWindow.webContents.send('update-lines', 'active')
-    });
+    })
 
     // 菜单模板
     const menuTemplate = [
@@ -82,10 +79,10 @@ app.on('ready', function () {
         {
             label: '清空工作区',
             click() {
-                mainWindow.webContents.send('main_child', 'cleared');
+                BrowserWindow.getFocusedWindow().webContents.send('main_child', 'cleared')
             }
         }
-    ];
+    ]
 
     // 构建菜单项
     const menu = Menu.buildFromTemplate(menuTemplate);
@@ -101,14 +98,12 @@ app.on('ready', function () {
                     contextIsolation: false
                 }
             })
-            newWindow.loadURL('file://' + __dirname + '/src/html/index.html');
+            newWindow.loadURL('file://' + __dirname + '/src/html/index.html')
             newWindow.on('close', function (e) {
                 e.preventDefault()
-                newWindow.webContents.send('main_child', 'close');
-                winObject = newWindow
+                BrowserWindow.getFocusedWindow().webContents.send('main_child', 'close')
             })
             newWindow.on('closed', function () {
-                winObject = null;
                 newWindow = null
             })
             newWindow.on('resize', function () {

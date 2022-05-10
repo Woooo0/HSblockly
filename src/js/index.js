@@ -280,9 +280,12 @@ function main_init() {
 
     ipcRenderer.on('file_menu', (event, arg) => {
         console.log(arg)
+        alert(arg)
     })
+
     $(function () {
         $(".pop, .close-pop").hide();
+        document.getElementById("close-pop").style.visibility = 'visible'
         $(".code-text").linedtextarea()
     })
     $(".uart_button").on('click', function (e) {
@@ -292,6 +295,7 @@ function main_init() {
         ipcRenderer.send('child_main', $(this).index())
         document.getElementById("file-menu").style.display = 'none'
     })
+    var winObject;
     $(".master, .menu-button").mousedown(function () {
         var file_menu = document.getElementById('file-menu')
         var connect_divice_menu = document.getElementById('connect_divice-menu')
@@ -304,14 +308,16 @@ function main_init() {
     })
 }
 
-//const blocklyDiv = document.querySelector('output')
+setTimeout(() => {
+    const blocklyDiv = document.querySelector('#blocklyDiv')
 
-window.addEventListener('contextmenu', event => {
-    event.preventDefault()
-    const client = {
-        x: event.clientX,
-        y: event.clientY
-    }
-    // 把鼠标位置发送到主进程
-    ipcRenderer.send('child_main', client)
-})
+    blocklyDiv.addEventListener('contextmenu', event => {
+        event.preventDefault()
+        const client = {
+            x: event.clientX,
+            y: event.clientY
+        }
+        // 把鼠标位置发送到主进程
+        ipcRenderer.send('child_main', client)
+    })
+}, 500);
