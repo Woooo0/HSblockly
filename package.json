@@ -1,10 +1,32 @@
 {
-    "name": "科盟科教",
+    "name": "KmEducation",
     "version": "1.0.0",
     "description": "",
     "author": "Dmh",
     "license": "ISC",
     "main": "main.js",
+    "build": {
+        "win": {
+            "icon": "./icon/KmEducationDesktop.ico"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true
+        },
+        "extraResources": [
+            {
+                "from": "./resources/cli.exe",
+                "to": "./cli.exe"
+            }
+        ],
+        "fileAssociations": [
+            {
+                "ext": "ke",
+                "name": "KmEducation File",
+                "role": "Editor"
+            }
+        ]
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "electron-builder"

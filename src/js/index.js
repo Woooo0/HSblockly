@@ -181,7 +181,7 @@ function uploads() {
             }
         });
 
-        var executablePath = "cli.exe"
+        var executablePath = "./resources/cli.exe"
         var parameters = [path, programName]
         var index = deviceList.indexOf(path)
         select_port(true)
@@ -235,6 +235,7 @@ function close_win(evt) {
 }
 
 function main_init() {
+    console.log(process.versions);
     //生成模块列表区域
     var blocklyDiv = document.getElementById('blocklyDiv')
     var workspace = Blockly.inject(blocklyDiv, {
@@ -296,7 +297,7 @@ function main_init() {
         var filePaths = arg.filePaths[0]
         fs.readFile(filePaths, (err, data) => {
             if (err) {
-                alert('文件打开失败,请重试或重启软件！')
+                alert('打开失败,请重试或重启软件！')
             }
             const xml = Blockly.Xml.textToDom(data);
             Blockly.Xml.domToWorkspace(xml, workspace);
