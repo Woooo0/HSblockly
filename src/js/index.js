@@ -3,6 +3,10 @@ const { shell, ipcRenderer } = require('electron')
 const exec = require('child_process').execFile;
 const fs = require('fs');
 const { DelimiterParser } = require('@serialport/parser-delimiter')
+document.write("<script type='text/javascript' src='../js/9028b/blocks.js''></script>");
+document.write("<script type='text/javascript' src='../js/9028b/generator.js''></script>");
+document.write("<script type='text/javascript' src='../js/9028b/msg.js''></script>");
+document.write("<script type='text/javascript' src='../js/9028b/toolbox.js''></script>");
 
 var deviceType;
 var deviceList = [];
@@ -235,12 +239,14 @@ function close_win(evt) {
 }
 
 function main_init() {
-    console.log(process.versions);
+    addBlocks(Blockly)
+    addGenerator(Blockly)
+    addMsg(Blockly)
     //生成模块列表区域
     var blocklyDiv = document.getElementById('blocklyDiv')
     var workspace = Blockly.inject(blocklyDiv, {
         media: '../../node_modules/blockly/media/',
-        toolbox: document.getElementById('toolbox'),
+        toolbox: Blockly.Xml.textToDom(addToolbox()),
         zoom: {
             controls: true,
             wheel: true,
@@ -251,12 +257,12 @@ function main_init() {
         },
         trashcan: true,
         scrollBar: true
-    });
+    })
 
     //调整工作区域大小
     var onresize = function (e) {
         Blockly.svgResize(workspace)
-    };
+    }
     //注册resize处理函数
     window.addEventListener('resize', onresize)
     Blockly.svgResize(workspace)
@@ -290,7 +296,7 @@ function main_init() {
             } else {
                 console.log('save successful')
             }
-        });
+        })
     })
 
     ipcRenderer.on('open_file', (event, arg) => {
