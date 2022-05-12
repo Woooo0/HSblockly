@@ -1,5 +1,5 @@
-function addMsg(Blockly) {
-    Blockly.Msg.LISTS_REPEAT_TITLE = 'length of %1';
+function addMsg_9028b(Blockly) {
+    Blockly.Msg.LISTS_REPEAT_TITLE = '长度 of %1';
 }
 
-exports = addMsg;
+exports = addMsg_9028b;

@@ -1,4 +1,4 @@
-function addGenerator(Blockly) {
+function addGenerator_9028b(Blockly) {
     Blockly.Python['string_length'] = function(block) {
         // TODO: Assemble Python into code variable.
         var code = '...\n';
@@ -6,4 +6,4 @@ function addGenerator(Blockly) {
       };
 }
 
-exports = addGenerator;
+exports = addGenerator_9028b;

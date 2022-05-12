@@ -1,8 +1,8 @@
-function addBlocks(Blockly) {
+function addBlocks_9028b(Blockly) {
     Blockly.Blocks['string_length'] = {
         init: function () {
             this.jsonInit({
-                "message0": 'length of %1',
+                "message0": Blockly.Msg.LISTS_REPEAT_TITLE,
                 "args0": [
                     {
                         "type": "input_value",
@@ -12,10 +12,9 @@ function addBlocks(Blockly) {
                 ],
                 "output": "Number",
                 "colour": '#9AC0CD',
-                "tooltip": "Returns number of letters in the provided text.",
             });
         }
     }
 }
 
-exports = addBlocks;
+exports = addBlocks_9028b;

@@ -7,7 +7,12 @@ document.write("<script type='text/javascript' src='../js/9028b/blocks.js''></sc
 document.write("<script type='text/javascript' src='../js/9028b/generator.js''></script>");
 document.write("<script type='text/javascript' src='../js/9028b/msg.js''></script>");
 document.write("<script type='text/javascript' src='../js/9028b/toolbox.js''></script>");
+document.write("<script type='text/javascript' src='../js/9016/blocks.js''></script>");
+document.write("<script type='text/javascript' src='../js/9016/generator.js''></script>");
+document.write("<script type='text/javascript' src='../js/9016/msg.js''></script>");
+document.write("<script type='text/javascript' src='../js/9016/toolbox.js''></script>");
 
+var global_workspace;
 var deviceType;
 var deviceList = [];
 var path;  //串口号
@@ -58,6 +63,7 @@ function select() {
 }
 
 function select_device(evt) {
+    global_workspace.clear()
     evt = evt || window.event
     var obj = evt.target || evt.srcElement
     switch (obj.id) {
@@ -66,12 +72,20 @@ function select_device(evt) {
             document.getElementById('light').style.display = 'none'
             document.getElementById('fade').style.display = 'none'
             document.getElementById('select').innerHTML = '9028b'
+            addBlocks_9028b(Blockly)
+            addGenerator_9028b(Blockly)
+            addMsg_9028b(Blockly)
+            global_workspace.updateToolbox(Blockly.Xml.textToDom(addToolbox_9028b()));
             break;
         case "9016":
             deviceType = '9016'
             document.getElementById('light').style.display = 'none'
             document.getElementById('fade').style.display = 'none'
             document.getElementById('select').innerHTML = '9016'
+            addBlocks_9016(Blockly)
+            addGenerator_9016(Blockly)
+            addMsg_9016(Blockly)
+            global_workspace.updateToolbox(Blockly.Xml.textToDom(addToolbox_9016()));
             break
         case "close_popup":
             document.getElementById('light').style.display = 'none'
@@ -239,14 +253,14 @@ function close_win(evt) {
 }
 
 function main_init() {
-    addBlocks(Blockly)
-    addGenerator(Blockly)
-    addMsg(Blockly)
+    addBlocks_9028b(Blockly)
+    addGenerator_9028b(Blockly)
+    addMsg_9028b(Blockly)
     //生成模块列表区域
     var blocklyDiv = document.getElementById('blocklyDiv')
     var workspace = Blockly.inject(blocklyDiv, {
         media: '../../node_modules/blockly/media/',
-        toolbox: Blockly.Xml.textToDom(addToolbox()),
+        toolbox: Blockly.Xml.textToDom(addToolbox_9028b()),
         zoom: {
             controls: true,
             wheel: true,
@@ -258,6 +272,7 @@ function main_init() {
         trashcan: true,
         scrollBar: true
     })
+    global_workspace = workspace
 
     //调整工作区域大小
     var onresize = function (e) {

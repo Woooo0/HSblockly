@@ -1,49 +1,22 @@
-function addToolbox() {
-    document.getElementById('toolbox').innerHTML =
-        `<category name="电机" colour="210">
-        <block type="controls_if"></block>
-        <block type="logic_compare"></block>
-        <block type="math_number"></block>
-        <block type="math_arithmetic"></block>
-        <block type="text"></block>
-        <block type="text_print"></block>
-    </category>
-    <category name="LED" colour="120">
-        <block type="controls_if"></block>
-        <block type="controls_if">
-            <mutation else="1"></mutation>
-        </block>
-        <block type="controls_if">
-            <mutation elseif="1" else="1"></mutation>
+function addToolbox_9016() {
+    return `<xml>
+    <category name="控制" colour="#ffab19">
+        <block type="string_length">
         </block>
     </category>
-    <category name="传感器" colour="230">
-        <block type="controls_if"></block>
-        <block type="controls_if">
-            <mutation else="1"></mutation>
-        </block>
-        <block type="controls_if">
-            <mutation elseif="1" else="1"></mutation>
-        </block>
+    <category name="运算" colour="#40bf4a">
+
     </category>
-    <category name="音乐" colour="20">
-        <block type="controls_if"></block>
-        <block type="controls_if">
-            <mutation else="1"></mutation>
-        </block>
-        <block type="controls_if">
-            <mutation elseif="1" else="1"></mutation>
-        </block>
+    <category name="变量" colour="#ff8c1a">
+
     </category>
-    <category name="通信" colour="330">
-        <block type="controls_if"></block>
-        <block type="controls_if">
-            <mutation else="1"></mutation>
-        </block>
-        <block type="controls_if">
-            <mutation elseif="1" else="1"></mutation>
-        </block>
-    </category>`
+    <category name="串口" colour="#9966ff">
+
+    </category>
+    <category name="数据" colour="#cf63cf">
+
+    </category>
+    </xml>`
 }
 
-exports = addToolbox;
+exports = addToolbox_9016;

@@ -1,4 +1,4 @@
-function addToolbox() {
+function addToolbox_9028b() {
     return `<xml>
     <category name="控制" colour="#ffab19">
 
@@ -33,4 +33,4 @@ function addToolbox() {
     </xml>`
 }
 
-exports = addToolbox;
+exports = addToolbox_9028b;
