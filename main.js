@@ -60,32 +60,6 @@ app.on('ready', function () {
         mainWindow.webContents.send('update-lines', 'active')
     })
 
-    // 菜单模板
-    const menuTemplate = [
-        {
-            label: '撤消',
-            // submenu: [
-            //     { role: 'undo' },
-            //     { role: 'redo' },
-            //     { type: 'separator' },
-            //     { role: 'cut' },
-            //     { role: 'copy' },
-            //     { role: 'paste' },
-            //     { role: 'pasteandmatchstyle' },
-            //     { role: 'delete' },
-            //     { role: 'selectall' }
-            // ]
-        },
-        {
-            label: '清空工作区',
-            click() {
-                BrowserWindow.getFocusedWindow().webContents.send('main_child', 'cleared')
-            }
-        }
-    ]
-
-    // 构建菜单项
-    const menu = Menu.buildFromTemplate(menuTemplate);
     ipcMain.on('child_main', (event, arg) => {
         var filters = [{ name: 'Program File', extensions: ['ke'] }]
         if (arg == 0) {
@@ -131,13 +105,6 @@ app.on('ready', function () {
             }).catch(err => {
                 console.log(err)
             })
-        }
-        else {
-            //右键菜单位置
-            menu.popup({
-                x: arg.x,
-                y: arg.y
-            });
         }
     });
     Menu.setApplicationMenu(null)

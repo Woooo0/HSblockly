@@ -3,14 +3,14 @@ const { shell, ipcRenderer } = require('electron')
 const exec = require('child_process').execFile;
 const fs = require('fs');
 const { DelimiterParser } = require('@serialport/parser-delimiter')
-document.write("<script type='text/javascript' src='../js/9028b/blocks.js''></script>");
-document.write("<script type='text/javascript' src='../js/9028b/generator.js''></script>");
-document.write("<script type='text/javascript' src='../js/9028b/msg.js''></script>");
-document.write("<script type='text/javascript' src='../js/9028b/toolbox.js''></script>");
-document.write("<script type='text/javascript' src='../js/9016/blocks.js''></script>");
-document.write("<script type='text/javascript' src='../js/9016/generator.js''></script>");
-document.write("<script type='text/javascript' src='../js/9016/msg.js''></script>");
-document.write("<script type='text/javascript' src='../js/9016/toolbox.js''></script>");
+document.write("<script type='text/javascript' src='../js/9028b/blocks.js'></script>");
+document.write("<script type='text/javascript' src='../js/9028b/generator.js'></script>");
+document.write("<script type='text/javascript' src='../js/9028b/msg.js'></script>");
+document.write("<script type='text/javascript' src='../js/9028b/toolbox.js'></script>");
+document.write("<script type='text/javascript' src='../js/9016/blocks.js'></script>");
+document.write("<script type='text/javascript' src='../js/9016/generator.js'></script>");
+document.write("<script type='text/javascript' src='../js/9016/msg.js'></script>");
+document.write("<script type='text/javascript' src='../js/9016/toolbox.js'></script>");
 
 var global_workspace;
 var deviceType;
@@ -58,39 +58,48 @@ function file() {
 }
 
 function select() {
-    document.getElementById('light').style.display = 'block'
-    document.getElementById('fade').style.display = 'block'
+    if (document.getElementById("output").value) {
+        popup("工作区不为空！", "alarm", undefined)
+    }
+    else {
+        document.getElementById('light').style.display = 'block'
+        document.getElementById('fade').style.display = 'block'
+    }
 }
 
 function select_device(evt) {
-    global_workspace.clear()
     evt = evt || window.event
     var obj = evt.target || evt.srcElement
     switch (obj.id) {
         case "9028b":
-            deviceType = '9028b'
-            document.getElementById('light').style.display = 'none'
-            document.getElementById('fade').style.display = 'none'
-            document.getElementById('select').innerHTML = '9028b'
-            addBlocks_9028b(Blockly)
-            addGenerator_9028b(Blockly)
-            addMsg_9028b(Blockly)
-            global_workspace.updateToolbox(Blockly.Xml.textToDom(addToolbox_9028b()));
+            device_change('9028b')
             break;
         case "9016":
-            deviceType = '9016'
-            document.getElementById('light').style.display = 'none'
-            document.getElementById('fade').style.display = 'none'
-            document.getElementById('select').innerHTML = '9016'
-            addBlocks_9016(Blockly)
-            addGenerator_9016(Blockly)
-            addMsg_9016(Blockly)
-            global_workspace.updateToolbox(Blockly.Xml.textToDom(addToolbox_9016()));
+            device_change('9016')
             break
         case "close_popup":
             document.getElementById('light').style.display = 'none'
             document.getElementById('fade').style.display = 'none'
             break
+    }
+}
+
+function device_change(device) {
+    deviceType = device
+    document.getElementById('light').style.display = 'none'
+    document.getElementById('fade').style.display = 'none'
+    document.getElementById('select').innerHTML = device
+    if (device == '9028b') {
+        addBlocks_9028b(Blockly)
+        addGenerator_9028b(Blockly)
+        addMsg_9028b(Blockly)
+        global_workspace.updateToolbox(Blockly.Xml.textToDom(addToolbox_9028b()));
+    }
+    else if (device == '9016') {
+        addBlocks_9016(Blockly)
+        addGenerator_9016(Blockly)
+        addMsg_9016(Blockly)
+        global_workspace.updateToolbox(Blockly.Xml.textToDom(addToolbox_9016()));
     }
 }
 
@@ -257,10 +266,10 @@ function main_init() {
     addGenerator_9028b(Blockly)
     addMsg_9028b(Blockly)
     //生成模块列表区域
-    var blocklyDiv = document.getElementById('blocklyDiv')
-    var workspace = Blockly.inject(blocklyDiv, {
+    var workspace = Blockly.inject('blocklyDiv', {
         media: '../../node_modules/blockly/media/',
         toolbox: Blockly.Xml.textToDom(addToolbox_9028b()),
+        //toolbox: document.getElementById('toolbox'),
         zoom: {
             controls: true,
             wheel: true,
@@ -268,6 +277,13 @@ function main_init() {
             maxScale: 3,
             minScale: 0.5,
             scaleSpeed: 1.05
+        },
+        grid:
+        {
+            spacing: 20,
+            length: 3,
+            colour: '#ccc',
+            snap: true
         },
         trashcan: true,
         scrollBar: true
@@ -292,10 +308,7 @@ function main_init() {
     workspace.addChangeListener(myUpdateFunction)
 
     ipcRenderer.on('main_child', (event, arg) => {
-        if (arg == 'cleared') {
-            workspace.clear()
-        }
-        else if (arg == 'close') {
+        if (arg == 'close') {
             $(".close-pop").fadeIn(500);
         }
     })
@@ -348,17 +361,3 @@ function main_init() {
         }
     })
 }
-
-setTimeout(() => {
-    const blocklyDiv = document.querySelector('#blocklyDiv')
-
-    blocklyDiv.addEventListener('contextmenu', event => {
-        event.preventDefault()
-        const client = {
-            x: event.clientX,
-            y: event.clientY
-        }
-        // 把鼠标位置发送到主进程
-        ipcRenderer.send('child_main', client)
-    })
-}, 500);
