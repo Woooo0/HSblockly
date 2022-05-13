@@ -178,10 +178,14 @@
     filter: alpha(opacity=88);
 }
 
-.white_content {
+.white_content,
+.examples-content {
     width: 500px;
     height: 400px;
     display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     position: absolute;
     top: 25%;
     left: 35%;
@@ -190,6 +194,11 @@
     z-index: 1002;
     overflow: auto;
     border-radius: 15px;
+}
+
+.white-view {
+    width: 460px;
+    height: 350px;
 }
 
 .device-message {
@@ -222,9 +231,9 @@
     margin-left: 25px;
 }
 
-.white_content button {
-    margin-top: 110px;
-    margin-left: 205px;
+.white_content button,
+.examples-content button{
+    width: 90px;
     background-color: #0099ff;
     border-radius: 10px;
     border: none;
@@ -242,6 +251,20 @@
     min-width: 800px;
     min-height: 300px;
     display: flex;
+}
+
+.examples-button {
+    width: 85px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background-color: #0099ff;
+    z-index: 1000;
+    overflow: auto;
 }
 
 .side {
@@ -345,6 +368,7 @@
     border: 1px solid #e6e6e6;
     border-radius: 5px;
     outline-color: #0099ff;
+    padding-left: 5px;
 }
 
 .uart-view button {

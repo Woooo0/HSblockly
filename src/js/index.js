@@ -62,11 +62,25 @@ function select() {
         popup("工作区不为空！", "alarm", undefined)
     }
     else {
-        document.getElementById('light').style.display = 'block'
+        document.getElementById('light').style.display = 'flex'
         document.getElementById('fade').style.display = 'block'
     }
 }
+function examples() {
+    document.getElementById('examples').style.display = 'flex'
+    document.getElementById('fade').style.display = 'block'
+}
 
+function select_examples(evt) {
+    evt = evt || window.event
+    var obj = evt.target || evt.srcElement
+    switch (obj.id) {
+        case "close_examples":
+            document.getElementById('examples').style.display = 'none'
+            document.getElementById('fade').style.display = 'none'
+            break
+    }
+}
 function select_device(evt) {
     evt = evt || window.event
     var obj = evt.target || evt.srcElement
@@ -281,7 +295,7 @@ function main_init() {
         grid:
         {
             spacing: 20,
-            length: 3,
+            length: 2.5,
             colour: '#ccc',
             snap: true
         },

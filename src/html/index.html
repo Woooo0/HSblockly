@@ -9,6 +9,7 @@
     <script src="../../msg/js/zh-hans.js"></script>
     <script src="../../node_modules/blockly/python_compressed.js"></script>
     <script src="../js/index.js"></script>
+    <script src="../js/custom-dialog.js"></script>
     <script> if (typeof module === 'object') { window.module = module; module = undefined; }</script>
     <script src="../js/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="../js/jquery-linedtextarea.js"></script>
@@ -58,22 +59,42 @@
     </div>
 
     <div id="light" class="white_content" onclick="select_device()" onselectstart="return false;">
-        <div id="9028b" class="device-message">
-            <img id="9028b" src="../images/9028b.png" />
-            <div id="9028b" class="detail">
-                <span id="9028b" style="margin-bottom: 5px; font-size: 19px; font-weight: 900;">科盟 9028b</span>
-                <span id="9028b" style="font-size: 13px; color: gray;">编程： 安卓、电脑图形化编程</span>
-                <span id="9028b" style="font-size: 13px; color: gray;">适龄： 3~6周岁</span>
-                <span id="9028b" style="font-size: 13px; color: gray;">特点： 简单易用，功能丰富</span>
+        <div class="white-view ">
+            <div id="9028b" class="device-message">
+                <img id="9028b" src="../images/9028b.png" />
+                <div id="9028b" class="detail">
+                    <span id="9028b" style="margin-bottom: 5px; font-size: 19px; font-weight: 900;">科盟 9028b</span>
+                    <span id="9028b" style="font-size: 13px; color: gray;">编程： 安卓、电脑图形化编程</span>
+                    <span id="9028b" style="font-size: 13px; color: gray;">适龄： 3~6周岁</span>
+                    <span id="9028b" style="font-size: 13px; color: gray;">特点： 简单易用，功能丰富</span>
+                </div>
             </div>
-        </div>
-        <div id="9016" class="device-message">
-            <img id="9016" src="../images/9016.jpg" />
-            <div id="9016" class="detail">
-                <span id="9016" style="margin-bottom: 5px; font-size: 19px; font-weight: 900;">科盟 9016</span>
-                <span id="9016" style="font-size: 13px; color: gray;">编程： 电脑图形化编程</span>
-                <span id="9016" style="font-size: 13px; color: gray;">适龄： 6~12周岁</span>
-                <span id="9016" style="font-size: 13px; color: gray;">特点： 简单易用，功能丰富</span>
+            <div id="9016" class="device-message">
+                <img id="9016" src="../images/9016.jpg" />
+                <div id="9016" class="detail">
+                    <span id="9016" style="margin-bottom: 5px; font-size: 19px; font-weight: 900;">科盟 9016</span>
+                    <span id="9016" style="font-size: 13px; color: gray;">编程： 电脑图形化编程</span>
+                    <span id="9016" style="font-size: 13px; color: gray;">适龄： 6~12周岁</span>
+                    <span id="9016" style="font-size: 13px; color: gray;">特点： 简单易用，功能丰富</span>
+                </div>
+            </div>
+            <div id="9016" class="device-message">
+                <img id="9016" src="../images/9016.jpg" />
+                <div id="9016" class="detail">
+                    <span id="9016" style="margin-bottom: 5px; font-size: 19px; font-weight: 900;">科盟 9016</span>
+                    <span id="9016" style="font-size: 13px; color: gray;">编程： 电脑图形化编程</span>
+                    <span id="9016" style="font-size: 13px; color: gray;">适龄： 6~12周岁</span>
+                    <span id="9016" style="font-size: 13px; color: gray;">特点： 简单易用，功能丰富</span>
+                </div>
+            </div>
+            <div id="9016" class="device-message">
+                <img id="9016" src="../images/9016.jpg" />
+                <div id="9016" class="detail">
+                    <span id="9016" style="margin-bottom: 5px; font-size: 19px; font-weight: 900;">科盟 9016</span>
+                    <span id="9016" style="font-size: 13px; color: gray;">编程： 电脑图形化编程</span>
+                    <span id="9016" style="font-size: 13px; color: gray;">适龄： 6~12周岁</span>
+                    <span id="9016" style="font-size: 13px; color: gray;">特点： 简单易用，功能丰富</span>
+                </div>
             </div>
         </div>
         <button id="close_popup" type="button">关闭</button>
@@ -100,6 +121,15 @@
 
     <div id="master" class="master">
         <div id="blocklyDiv" style="height: 100%; width: 80%"></div>
+        <div id="examples_button" class="examples-button" onclick="examples()">
+            <img src="../images/examples.svg" style="height: 30px; width: 30px;" />
+        </div>
+        <div id="examples" class="examples-content" onclick="select_examples()" onselectstart="return false;">
+            <div class="white-view ">
+
+            </div>
+            <button id="close_examples" type="button">关闭</button>
+        </div>
         <div class="side">
             <div class="code-view" id='code'>
                 <textarea id="output" class="code-text" rows="1" cols="80"></textarea>
@@ -121,7 +151,6 @@
             </div>
         </div>
     </div>
-
     <script>
         main_init()
     </script>

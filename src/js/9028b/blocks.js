@@ -9,12 +9,12 @@ function addBlocks_9028b(Blockly) {
                         {
                             "type": "field_number",
                             "name": "delay",
-                            "value": 10
+                            "value": 1
                         }
                     ],
                     "previousStatement": null,
                     "nextStatement": null,
-                    "colour": "#ffab19",
+                    "colour": "#5CACEE",
                     "tooltip": "",
                     "helpUrl": ""
                 });
