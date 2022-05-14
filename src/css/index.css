@@ -117,7 +117,7 @@
     top: 45px;
     left: 230px;
     background-color: #0099ff;
-    z-index: 1002;
+    z-index: 1003;
     overflow: auto;
     border-radius: 0px 0px 10px 10px;
     border-top: 2px solid #0883D6;
@@ -261,7 +261,13 @@
     border-radius: 15px;
     cursor: pointer;
     overflow: auto;
+}
 
+.examples-message span {
+    height: 30px;
+    margin-left: 8px;
+    font-size: 15px;
+    font-weight: 800;
 }
 
 .examples-message img {

@@ -112,7 +112,9 @@ function addToolbox_9028b() {
     </category>
     <sep></sep>
     <category name="串口" colour="#9966ff">
-  
+    <block type="text">
+      <field name="TEXT">Hello KmEducation</field>
+    </block>
     </category>
     <sep></sep>
     <category name="电机" colour="#9AC0CD">

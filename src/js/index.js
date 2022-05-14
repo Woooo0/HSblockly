@@ -28,7 +28,7 @@ function popup(text, type, delay) {
         color = "#0fbd8c"
     }
     else if (type == 'alarm') {
-        color = "#ff6600"
+        color = "#F4A460"
     }
     else if (type == 'error') {
         color = "#ff3300"
@@ -40,6 +40,18 @@ function popup(text, type, delay) {
         setTimeout(function () {
             $(".pop").slideUp(delay)
         }, 1000)
+    }
+}
+
+function message_popup(show, id){
+    if(show){
+
+        document.getElementById(id).style.display = 'flex'
+        document.getElementById('fade').style.display = 'block'
+    }
+    else{
+        document.getElementById(id).style.display = 'none'
+        document.getElementById('fade').style.display = 'none'
     }
 }
 
@@ -62,13 +74,11 @@ function select() {
         popup("工作区不为空！", "alarm", undefined)
     }
     else {
-        document.getElementById('light').style.display = 'flex'
-        document.getElementById('fade').style.display = 'block'
+        message_popup(true,'light')
     }
 }
 function examples() {
-    document.getElementById('examples').style.display = 'flex'
-    document.getElementById('fade').style.display = 'block'
+    message_popup(true,'examples')
 }
 
 function select_examples(evt) {
@@ -76,8 +86,7 @@ function select_examples(evt) {
     var obj = evt.target || evt.srcElement
     switch (obj.id) {
         case "close_examples":
-            document.getElementById('examples').style.display = 'none'
-            document.getElementById('fade').style.display = 'none'
+             message_popup(false,'examples')
             break
     }
 }
@@ -92,16 +101,14 @@ function select_device(evt) {
             device_change('9016')
             break
         case "close_popup":
-            document.getElementById('light').style.display = 'none'
-            document.getElementById('fade').style.display = 'none'
+            message_popup(false,'light')
             break
     }
 }
 
 function device_change(device) {
     deviceType = device
-    document.getElementById('light').style.display = 'none'
-    document.getElementById('fade').style.display = 'none'
+    message_popup(false,'light')
     document.getElementById('select').innerHTML = device
     if (device == '9028b') {
         addBlocks_9028b(Blockly)
@@ -299,7 +306,7 @@ function main_init() {
             colour: '#ccc',
             snap: true
         },
-        trashcan: true,
+        trashcan: false,
         scrollBar: true
     })
     global_workspace = workspace
@@ -320,6 +327,38 @@ function main_init() {
         output.value = code
     }
     workspace.addChangeListener(myUpdateFunction)
+
+    var str = ''
+    $.ajax({
+        url: "../../resources/examples/examples.json",
+        type: "GET",
+        dataType: "json",
+        success:
+            function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    str += '<div class="examples-message">' +
+                        '<img src="../../resources/examples/images/' + data[i].image + '"/> ' +
+                        '<span>' + data[i].title + '</span>' +
+                        '</div>'
+                }
+                document.getElementById('example_list').innerHTML = str
+                $(".examples-message").on('click', function (e) {
+                    var src = 'E:/HSblockly/resources/examples/src/' + data[$(this).index()].program + ''
+                    console.log(src)
+                    fs.readFile(src, (err, data) => {
+                        if (err) {
+                            alert('打开例程失败,请重试或重启软件！')
+                        }
+                        else {
+                            global_workspace.clear()
+                            const xml = Blockly.Xml.textToDom(data);
+                            Blockly.Xml.domToWorkspace(xml, workspace);
+                            message_popup(false,'examples')
+                        }
+                    })
+                })
+            }
+    })
 
     ipcRenderer.on('main_child', (event, arg) => {
         if (arg == 'close') {
@@ -347,8 +386,11 @@ function main_init() {
             if (err) {
                 alert('打开失败,请重试或重启软件！')
             }
-            const xml = Blockly.Xml.textToDom(data);
-            Blockly.Xml.domToWorkspace(xml, workspace);
+            else {
+                global_workspace.clear()
+                const xml = Blockly.Xml.textToDom(data);
+                Blockly.Xml.domToWorkspace(xml, workspace);
+            }
         })
     })
 

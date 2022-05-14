@@ -1,0 +1,32 @@
+[
+    {
+        "title": "音乐",
+        "image": "music.jpg",
+        "program": "music.ke"
+    },
+    {
+        "title": "巡线小车",
+        "image": "line.jpg",
+        "program": "line.ke"
+    },
+    {
+        "title": "摩天轮",
+        "image": "roller_coaste.jpg",
+        "program": "roller_coaste.ke"
+    },
+    {
+        "title": "大风车",
+        "image": "windmill.jpg",
+        "program": "windmill.ke"
+    },
+    {
+        "title": "引体向上",
+        "image": "pull-up.jpg",
+        "program": "pull-up.ke"
+    },
+    {
+        "title": "抢答器",
+        "image": "answer.jpg",
+        "program": "answer.ke"
+    }
+]
