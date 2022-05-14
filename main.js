@@ -1,5 +1,7 @@
 const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron')
-const log = require('electron-log');
+const log = require('electron-log')
+const path = require('path')
+var package = require("./package.json");
 const reloader = require('electron-reloader')
 
 log.transports.file.resolvePath = () => "./HSlog.log"
@@ -18,6 +20,11 @@ app.on('window-all-closed', function () {
     }
 });
 
+app.on('open-file', (event, path) => {
+    event.preventDefault()
+    mainWindow.webContents.send("open-file_path", process)
+});
+
 ipcMain.on('close_win', (event, arg) => {
     BrowserWindow.getFocusedWindow().destroy()
 })
@@ -29,12 +36,14 @@ app.on('ready', function () {
     mainWindow = new BrowserWindow({
         width: 1300,
         height: 800,
-        //icon: path.join(__dirname, './icon/KmEducationDesktop.ico'),
+        title: `${package.name} ${package.version}`,
+        icon: path.join(__dirname, './icon/KmEducationDesktop.ico'),
 
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
-        }
+        },
+        show: false
     })
 
     // 加载应用的 index.html
@@ -46,6 +55,7 @@ app.on('ready', function () {
     mainWindow.on('close', function (e) {
         e.preventDefault()
         BrowserWindow.getFocusedWindow().webContents.send('main_child', "close")
+        mainWindow.webContents.send("open-file_path", "process")
     })
 
     // 当 window 被关闭，这个事件会被发出
@@ -58,6 +68,11 @@ app.on('ready', function () {
 
     mainWindow.on('resize', function () {
         mainWindow.webContents.send('update-lines', 'active')
+    })
+
+    mainWindow.on('ready-to-show', function () {
+        mainWindow.webContents.send('main_child', __dirname)
+        mainWindow.show()
     })
 
     ipcMain.on('child_main', (event, arg) => {
@@ -108,4 +123,4 @@ app.on('ready', function () {
         }
     });
     Menu.setApplicationMenu(null)
-});
+})

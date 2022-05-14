@@ -1,18 +1,19 @@
 const { SerialPort } = require('serialport')
 const { shell, ipcRenderer } = require('electron')
-const exec = require('child_process').execFile;
-const fs = require('fs');
+const exec = require('child_process').execFile
+const fs = require('fs')
 const { DelimiterParser } = require('@serialport/parser-delimiter')
-document.write("<script type='text/javascript' src='../js/9028b/blocks.js'></script>");
-document.write("<script type='text/javascript' src='../js/9028b/generator.js'></script>");
-document.write("<script type='text/javascript' src='../js/9028b/msg.js'></script>");
-document.write("<script type='text/javascript' src='../js/9028b/toolbox.js'></script>");
-document.write("<script type='text/javascript' src='../js/9016/blocks.js'></script>");
-document.write("<script type='text/javascript' src='../js/9016/generator.js'></script>");
-document.write("<script type='text/javascript' src='../js/9016/msg.js'></script>");
-document.write("<script type='text/javascript' src='../js/9016/toolbox.js'></script>");
+document.write("<script type='text/javascript' src='../js/9028b/blocks.js'></script>")
+document.write("<script type='text/javascript' src='../js/9028b/generator.js'></script>")
+document.write("<script type='text/javascript' src='../js/9028b/msg.js'></script>")
+document.write("<script type='text/javascript' src='../js/9028b/toolbox.js'></script>")
+document.write("<script type='text/javascript' src='../js/9016/blocks.js'></script>")
+document.write("<script type='text/javascript' src='../js/9016/generator.js'></script>")
+document.write("<script type='text/javascript' src='../js/9016/msg.js'></script>")
+document.write("<script type='text/javascript' src='../js/9016/toolbox.js'></script>")
 
 var global_workspace;
+var dirname;
 var deviceType;
 var deviceList = [];
 var path;  //串口号
@@ -43,13 +44,13 @@ function popup(text, type, delay) {
     }
 }
 
-function message_popup(show, id){
-    if(show){
+function message_popup(show, id) {
+    if (show) {
 
         document.getElementById(id).style.display = 'flex'
         document.getElementById('fade').style.display = 'block'
     }
-    else{
+    else {
         document.getElementById(id).style.display = 'none'
         document.getElementById('fade').style.display = 'none'
     }
@@ -74,11 +75,51 @@ function select() {
         popup("工作区不为空！", "alarm", undefined)
     }
     else {
-        message_popup(true,'light')
+        message_popup(true, 'light')
     }
 }
+
 function examples() {
-    message_popup(true,'examples')
+    if (deviceType != undefined) {
+        get_examples()
+        message_popup(true, 'examples')
+    }
+    else {
+        popup("请选择设备！", "alarm", undefined)
+    }
+}
+
+function get_examples() {
+    var str = ''
+    $.ajax({
+        url: "../../resources/examples/" + deviceType + "/examples.json",
+        type: "GET",
+        dataType: "json",
+        success:
+            function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    str += '<div id="example-view" class="examples-message">' +
+                        '<img src="../../resources/examples/' + deviceType + '/images/' + data[i].image + '"/> ' +
+                        '<span>' + data[i].title + '</span>' +
+                        '</div>'
+                }
+                document.getElementById('example_list').innerHTML = str
+                $(".examples-message").on('click', function (e) {
+                    // var src = '' + dirname + '/resources/examples/' + deviceType + '/src/' + data[$(this).index()].program + ''
+                    // fs.readFile(src, (err, data) => {
+                    //     if (err) {
+                    //         alert('打开例程失败,请重试或重启软件！')
+                    //     }
+                    //     else {
+                    //         global_workspace.clear()
+                    //         const xml = Blockly.Xml.textToDom(data);
+                    //         Blockly.Xml.domToWorkspace(xml, global_workspace);
+                    //         message_popup(false, 'examples')
+                    //     }
+                    // })
+                })
+            }
+    })
 }
 
 function select_examples(evt) {
@@ -86,10 +127,11 @@ function select_examples(evt) {
     var obj = evt.target || evt.srcElement
     switch (obj.id) {
         case "close_examples":
-             message_popup(false,'examples')
+            message_popup(false, 'examples')
             break
     }
 }
+
 function select_device(evt) {
     evt = evt || window.event
     var obj = evt.target || evt.srcElement
@@ -101,14 +143,15 @@ function select_device(evt) {
             device_change('9016')
             break
         case "close_popup":
-            message_popup(false,'light')
+            message_popup(false, 'light')
             break
     }
 }
 
 function device_change(device) {
     deviceType = device
-    message_popup(false,'light')
+    message_popup(false, 'light')
+    document.getElementById("example_list").innerHTML = "";
     document.getElementById('select').innerHTML = device
     if (device == '9028b') {
         addBlocks_9028b(Blockly)
@@ -328,42 +371,28 @@ function main_init() {
     }
     workspace.addChangeListener(myUpdateFunction)
 
-    var str = ''
-    $.ajax({
-        url: "../../resources/examples/examples.json",
-        type: "GET",
-        dataType: "json",
-        success:
-            function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    str += '<div class="examples-message">' +
-                        '<img src="../../resources/examples/images/' + data[i].image + '"/> ' +
-                        '<span>' + data[i].title + '</span>' +
-                        '</div>'
-                }
-                document.getElementById('example_list').innerHTML = str
-                $(".examples-message").on('click', function (e) {
-                    var src = 'E:/HSblockly/resources/examples/src/' + data[$(this).index()].program + ''
-                    console.log(src)
-                    fs.readFile(src, (err, data) => {
-                        if (err) {
-                            alert('打开例程失败,请重试或重启软件！')
-                        }
-                        else {
-                            global_workspace.clear()
-                            const xml = Blockly.Xml.textToDom(data);
-                            Blockly.Xml.domToWorkspace(xml, workspace);
-                            message_popup(false,'examples')
-                        }
-                    })
-                })
-            }
-    })
-
     ipcRenderer.on('main_child', (event, arg) => {
         if (arg == 'close') {
             $(".close-pop").fadeIn(500);
         }
+        else {
+            dirname = arg
+        }
+    })
+
+    ipcRenderer.on('open-file_path', (event, arg) => {
+        console.log(arg)
+        // fs.readFile(src, (err, data) => {
+        //     if (err) {
+        //         alert('打开例程失败,请重试或重启软件！')
+        //     }
+        //     else {
+        //         global_workspace.clear()
+        //         const xml = Blockly.Xml.textToDom(data);
+        //         Blockly.Xml.domToWorkspace(xml, global_workspace);
+        //         message_popup(false, 'examples')
+        //     }
+        // })
     })
 
     ipcRenderer.on('save_file', (event, arg) => {

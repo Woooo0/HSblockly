@@ -21,12 +21,17 @@
     },
     {
         "title": "引体向上",
-        "image": "pull-up.jpg",
-        "program": "pull-up.ke"
+        "image": "pull_up.jpg",
+        "program": "pull_up.ke"
     },
     {
         "title": "抢答器",
         "image": "answer.jpg",
         "program": "answer.ke"
+    },
+    {
+        "title": "爬楼梯",
+        "image": "stairs.jpg",
+        "program": "stairs.ke"
     }
 ]

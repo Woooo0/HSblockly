@@ -15,8 +15,8 @@
         },
         "extraResources": [
             {
-                "from": "./resources/cli.exe",
-                "to": "./cli.exe"
+                "from": "./resources",
+                "to": "./"
             }
         ],
         "fileAssociations": [
