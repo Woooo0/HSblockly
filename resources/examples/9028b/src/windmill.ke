@@ -1,1 +1,6 @@
-<xml xmlns="https://developers.google.com/blockly/xml"><block type="text" id="u3EI_iJkJUv{7mhhb=K7" x="150" y="130"><field name="TEXT">windmill</field></block></xml>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xml xmlns="https://developers.google.com/blockly/xml" device="9028b">
+  <block type="text" id="qJ%n|U8bL(vNMCfG5+,L" x="90" y="50">
+    <field name="TEXT">大风车</field>
+  </block>
+</xml>

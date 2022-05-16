@@ -1,10 +1,10 @@
-const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron')
+const { app, BrowserWindow, Menu, dialog, ipcMain, globalShortcut } = require('electron')
 const log = require('electron-log')
 const path = require('path')
 var package = require("./package.json");
 const reloader = require('electron-reloader')
 
-log.transports.file.resolvePath = () => "./HSlog.log"
+log.transports.file.resolvePath = () => "./main.log"
 reloader(module)
 
 // 保持一个对于 window 对象的全局引用，不然，当 JavaScript 被 GC，
@@ -22,7 +22,6 @@ app.on('window-all-closed', function () {
 
 app.on('open-file', (event, path) => {
     event.preventDefault()
-    mainWindow.webContents.send("open-file_path", "process")
     mainWindow.webContents.send("open-file_path", process)
 });
 
@@ -44,14 +43,18 @@ app.on('ready', function () {
             nodeIntegration: true,
             contextIsolation: false
         },
-        show: false
+        show: false,
     })
+
+    globalShortcut.register('CommandOrControl+Shift+i', function () {
+        BrowserWindow.getFocusedWindow().webContents.openDevTools()
+      })
 
     // 加载应用的 index.html
     mainWindow.loadURL('file://' + __dirname + '/src/html/index.html')
 
     // 打开开发工具
-    mainWindow.openDevTools();
+    // mainWindow.openDevTools();
 
     mainWindow.on('close', function (e) {
         e.preventDefault()
@@ -107,9 +110,11 @@ app.on('ready', function () {
                 filters: filters,
                 buttonLabel: '打开作品'
             }).then(result => {
-                event.reply('open_file', result)
+                if (!result.canceled) {
+                    event.reply('open_file', result)
+                }
             }).catch(err => {
-                console.log(err)
+                log.error(err)
             })
         }
         else if (arg == 2) {
@@ -117,9 +122,11 @@ app.on('ready', function () {
                 title: '保存作品',
                 filters: filters,
             }).then(result => {
-                event.reply('save_file', result)
+                if (!result.canceled) {
+                    event.reply('save_file', result)
+                }
             }).catch(err => {
-                console.log(err)
+                log.error(err)
             })
         }
     });

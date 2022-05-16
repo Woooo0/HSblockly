@@ -1,1 +1,6 @@
-<xml xmlns="https://developers.google.com/blockly/xml"><block type="text" id="/4B*q}3;/{wfsvmoJw5f" x="110" y="70"><field name="TEXT">line</field></block></xml>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xml xmlns="https://developers.google.com/blockly/xml" device="9028b">
+  <block type="text" id="qJ%n|U8bL(vNMCfG5+,L" x="90" y="50">
+    <field name="TEXT">巡线小车</field>
+  </block>
+</xml>

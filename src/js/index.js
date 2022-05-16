@@ -3,7 +3,9 @@ const { shell, ipcRenderer } = require('electron')
 const exec = require('child_process').execFile
 const fs = require('fs')
 const { DelimiterParser } = require('@serialport/parser-delimiter')
-const xml2js = require('xml2js');
+const xml2js = require('xml2js')
+const log = require('electron-log')
+log.transports.file.resolvePath = () => "./child_log.log"
 document.write("<script type='text/javascript' src='../js/9028b/blocks.js'></script>")
 document.write("<script type='text/javascript' src='../js/9028b/generator.js'></script>")
 document.write("<script type='text/javascript' src='../js/9028b/msg.js'></script>")
@@ -66,7 +68,6 @@ function open_file(src) {
             var parser = new xml2js.Parser({ explicitArray: false })
             global_workspace.clear()
             parser.parseString(data, (err, result) => {
-                console.log(result.xml.$.device)
                 device_change(result.xml.$.device)
             });
             const xml = Blockly.Xml.textToDom(data);
@@ -257,11 +258,16 @@ function select_port(options, i = 0) {
                 });
             }
         })
+        port.on('close', () => {
+            document.getElementById('connect').innerHTML = '连接设备'
+            path = undefined
+        })
     }
     else {
         port.close(function (error) {
             if (error) {
                 console.log("关闭端口错误：" + error);
+                document.getElementById('connect').innerHTML = '连接设备'
             } else {
                 document.getElementById('connect').innerHTML = '连接设备'
                 path = undefined
@@ -393,18 +399,24 @@ function main_init() {
     ipcRenderer.on('open-file_path', (event, arg) => {
         var src = arg[1]
         if (src != undefined && src != ".") {
-            open_file(arg)
+            open_file(src)
         }
     })
 
     ipcRenderer.on('save_file', (event, arg) => {
         var filePath = arg.filePath
+        var saveDate;
         const xml = Blockly.Xml.workspaceToDom(workspace);
         const xmlText = Blockly.Xml.domToText(xml);
+        var parser = new xml2js.Parser({ explicitArray: false })
         if (deviceType == undefined) {
             deviceType = '9028b'
         }
-        var saveDate = deviceType + xmlText
+        parser.parseString(xmlText, (err, result) => {
+            result.xml.$["device"] = deviceType
+            const builder = new xml2js.Builder()
+            saveDate = builder.buildObject(result)
+        })
         fs.writeFile(filePath, saveDate, function (error) {
             if (error) {
                 alert("保存失败，请重试或重启软件！")

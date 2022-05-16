@@ -1,1 +1,6 @@
-<xml xmlns="https://developers.google.com/blockly/xml"><block type="text" id="xVY!8gv}Ko:,I?*ZK#jn" x="170" y="90"><field name="TEXT">Hello KmEducation</field></block></xml>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xml xmlns="https://developers.google.com/blockly/xml" device="9028b">
+  <block type="text" id="Gz_c5EbALMT0@/xV)upG" x="170" y="50">
+    <field name="TEXT">音乐</field>
+  </block>
+</xml>

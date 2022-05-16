@@ -1,1 +1,4 @@
-<xml xmlns="https://developers.google.com/blockly/xml"><block type="text" id="[4~;TP:Yy$7CuQX_)oHm" x="110" y="10"><field name="TEXT">answer</field></block></xml>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xml xmlns="https://developers.google.com/blockly/xml" device="9016">
+  <block type="string_length" id="IrzqSS`bG|o81z$ad34N" x="210" y="110"/>
+</xml>
