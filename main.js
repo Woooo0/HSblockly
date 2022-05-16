@@ -22,6 +22,7 @@ app.on('window-all-closed', function () {
 
 app.on('open-file', (event, path) => {
     event.preventDefault()
+    mainWindow.webContents.send("open-file_path", "process")
     mainWindow.webContents.send("open-file_path", process)
 });
 
@@ -55,7 +56,6 @@ app.on('ready', function () {
     mainWindow.on('close', function (e) {
         e.preventDefault()
         BrowserWindow.getFocusedWindow().webContents.send('main_child', "close")
-        mainWindow.webContents.send("open-file_path", "process")
     })
 
     // 当 window 被关闭，这个事件会被发出
@@ -73,6 +73,7 @@ app.on('ready', function () {
     mainWindow.on('ready-to-show', function () {
         mainWindow.webContents.send('main_child', __dirname)
         mainWindow.show()
+        mainWindow.webContents.send("open-file_path", process.argv)
     })
 
     ipcMain.on('child_main', (event, arg) => {

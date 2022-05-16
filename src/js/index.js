@@ -3,6 +3,7 @@ const { shell, ipcRenderer } = require('electron')
 const exec = require('child_process').execFile
 const fs = require('fs')
 const { DelimiterParser } = require('@serialport/parser-delimiter')
+const xml2js = require('xml2js');
 document.write("<script type='text/javascript' src='../js/9028b/blocks.js'></script>")
 document.write("<script type='text/javascript' src='../js/9028b/generator.js'></script>")
 document.write("<script type='text/javascript' src='../js/9028b/msg.js'></script>")
@@ -56,6 +57,24 @@ function message_popup(show, id) {
     }
 }
 
+function open_file(src) {
+    fs.readFile(src, (err, data) => {
+        if (err) {
+            alert('打开例程失败,请重试或重启软件！')
+        }
+        else {
+            var parser = new xml2js.Parser({ explicitArray: false })
+            global_workspace.clear()
+            parser.parseString(data, (err, result) => {
+                console.log(result.xml.$.device)
+                device_change(result.xml.$.device)
+            });
+            const xml = Blockly.Xml.textToDom(data);
+            Blockly.Xml.domToWorkspace(xml, global_workspace);
+        }
+    })
+}
+
 function about() {
     shell.openExternal('http://www.kmmaker.com')
 }
@@ -105,18 +124,9 @@ function get_examples() {
                 }
                 document.getElementById('example_list').innerHTML = str
                 $(".examples-message").on('click', function (e) {
-                    // var src = '' + dirname + '/resources/examples/' + deviceType + '/src/' + data[$(this).index()].program + ''
-                    // fs.readFile(src, (err, data) => {
-                    //     if (err) {
-                    //         alert('打开例程失败,请重试或重启软件！')
-                    //     }
-                    //     else {
-                    //         global_workspace.clear()
-                    //         const xml = Blockly.Xml.textToDom(data);
-                    //         Blockly.Xml.domToWorkspace(xml, global_workspace);
-                    //         message_popup(false, 'examples')
-                    //     }
-                    // })
+                    var src = '' + dirname + '/resources/examples/' + deviceType + '/src/' + data[$(this).index()].program + ''
+                    open_file(src)
+                    message_popup(false, 'examples')
                 })
             }
     })
@@ -381,26 +391,21 @@ function main_init() {
     })
 
     ipcRenderer.on('open-file_path', (event, arg) => {
-        console.log(arg)
-        // fs.readFile(src, (err, data) => {
-        //     if (err) {
-        //         alert('打开例程失败,请重试或重启软件！')
-        //     }
-        //     else {
-        //         global_workspace.clear()
-        //         const xml = Blockly.Xml.textToDom(data);
-        //         Blockly.Xml.domToWorkspace(xml, global_workspace);
-        //         message_popup(false, 'examples')
-        //     }
-        // })
+        var src = arg[1]
+        if (src != undefined && src != ".") {
+            open_file(arg)
+        }
     })
 
     ipcRenderer.on('save_file', (event, arg) => {
-        console.log(arg)
         var filePath = arg.filePath
         const xml = Blockly.Xml.workspaceToDom(workspace);
         const xmlText = Blockly.Xml.domToText(xml);
-        fs.writeFile(filePath, xmlText, function (error) {
+        if (deviceType == undefined) {
+            deviceType = '9028b'
+        }
+        var saveDate = deviceType + xmlText
+        fs.writeFile(filePath, saveDate, function (error) {
             if (error) {
                 alert("保存失败，请重试或重启软件！")
             } else {
@@ -410,17 +415,8 @@ function main_init() {
     })
 
     ipcRenderer.on('open_file', (event, arg) => {
-        var filePaths = arg.filePaths[0]
-        fs.readFile(filePaths, (err, data) => {
-            if (err) {
-                alert('打开失败,请重试或重启软件！')
-            }
-            else {
-                global_workspace.clear()
-                const xml = Blockly.Xml.textToDom(data);
-                Blockly.Xml.domToWorkspace(xml, workspace);
-            }
-        })
+        var src = arg.filePaths[0]
+        open_file(src)
     })
 
     $(function () {
