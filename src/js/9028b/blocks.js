@@ -21,21 +21,44 @@ function addBlocks_9028b(Blockly) {
         }
     }
 
-    Blockly.Blocks['while'] = {
+    Blockly.Blocks['print'] = {
         init: function () {
             this.jsonInit(
                 {
-                    "type": "while",
-                    "message0": Blockly.Msg.MAIN_WHILE,
+                    "type": "print",
+                    "message0": Blockly.Msg.PRINT,
                     "args0": [
                         {
-                            "type": "input_statement",
-                            "name": "while",
-                            "align": "RIGHT"
+                          "type": "input_value",
+                          "name": "print",
+                          "align": "RIGHT"
                         }
-                    ],
+                      ],
                     "previousStatement": null,
-                    "colour": "#ffab19",
+                    "nextStatement": null,
+                    "colour": "#9966ff",
+                    "tooltip": "",
+                    "helpUrl": ""
+                });
+        }
+    }
+
+    Blockly.Blocks['println'] = {
+        init: function () {
+            this.jsonInit(
+                {
+                    "type": "println",
+                    "message0": Blockly.Msg.PRINTLN,
+                    "args0": [
+                        {
+                          "type": "input_value",
+                          "name": "println",
+                          "align": "RIGHT"
+                        }
+                      ],
+                    "previousStatement": null,
+                    "nextStatement": null,
+                    "colour": "#9966ff",
                     "tooltip": "",
                     "helpUrl": ""
                 });

@@ -23,8 +23,8 @@ Blockly.dialog.setAlert(function (message, callback) {
 
 /** Override Blockly.dialog.confirm() with custom implementation. */
 Blockly.dialog.setConfirm(function (message, callback) {
-  console.log('Confirm: ' + message);
-  CustomDialog.show('Confirm', message, {
+  console.log('删除提醒: ' + message);
+  CustomDialog.show('删除提醒', message, {
     showOkay: true,
     onOkay: function () {
       callback(true);
@@ -91,9 +91,9 @@ CustomDialog.show = function (title, message, options) {
       'flex-direction: column;' +
       'align-items: center;' +
       'border-radius: 10px;' +
+      'position: relative;' +
       'background-color: #fff;' +
       'width: 320px;' +
-      'height: 160px;' +
       'border-top: 40px solid #0099ff;;' +
       'margin: 150px auto 0;';
     backdropDiv.appendChild(dialogDiv);
@@ -110,9 +110,9 @@ CustomDialog.show = function (title, message, options) {
 
   dialogDiv.innerHTML =
     '<header class="customDialogTitle" style="margin-top: -30px; color: white;"></header>' +
-    '<p class="customDialogMessage" style="margin-top: 30px; margin-left: -160px;"></p>' +
+    '<p class="customDialogMessage" style="margin-top: 30px;"></p>' +
     (options.showInput ? '<div><input id="customDialogInput" style="height: 35px; width: 280px; margin-top: 5px; padding-left: 5px; border: 1px solid #e6e6e6; border-radius: 5px; outline-color: #0099ff;"></div>' : '') +
-    '<div class="customDialogButtons" style="height: 30px; width: 100%; display: flex; justify-content: space-around; align-items: center; margin-top: 30px;">' +
+    '<div class="customDialogButtons" style="height: 30px; width: 100%; display: flex; justify-content: space-around; align-items: center; margin-top: 25px; margin-bottom: 20px;">' +
     (options.showCancel ? '<button id="customDialogCancel" style="height: 30px; width: 60px; border-radius: 5px; border: 1.5px solid #e6e6e6; background-color: white; color: black;">取消</button>' : '') +
     (options.showOkay ? '<button id="customDialogOkay" style="height: 30px; width: 60px; border-radius: 5px; border: 1.5px solid #e6e6e6; background-color: #0099ff; color: white;">确定</button>' : '') +
     '</div>';

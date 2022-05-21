@@ -5,7 +5,7 @@ var package = require("./package.json");
 const reloader = require('electron-reloader')
 
 log.transports.file.resolvePath = () => "./main.log"
-reloader(module)
+//reloader(module)
 
 // 保持一个对于 window 对象的全局引用，不然，当 JavaScript 被 GC，
 // window 会被自动地关闭
@@ -29,10 +29,7 @@ ipcMain.on('close_win', (event, arg) => {
     BrowserWindow.getFocusedWindow().destroy()
 })
 
-// 当 Electron 完成了初始化并且准备创建浏览器窗口的时候
-// 这个方法就被调用
 app.on('ready', function () {
-    // 创建浏览器窗口。
     mainWindow = new BrowserWindow({
         width: 1300,
         height: 800,
@@ -50,12 +47,7 @@ app.on('ready', function () {
         BrowserWindow.getFocusedWindow().webContents.openDevTools()
       })
 
-    // 加载应用的 index.html
     mainWindow.loadURL('file://' + __dirname + '/src/html/index.html')
-
-    // 打开开发工具
-    // mainWindow.openDevTools();
-
     mainWindow.on('close', function (e) {
         e.preventDefault()
         BrowserWindow.getFocusedWindow().webContents.send('main_child', "close")

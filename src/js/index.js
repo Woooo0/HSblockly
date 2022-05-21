@@ -21,7 +21,7 @@ var deviceType;
 var deviceList = [];
 var path;  //串口号
 var port;  //SerialPort实例
-var programName = './main.py'
+var programName = './custom.py'
 
 function popup(text, type, delay) {
     var color;
@@ -246,7 +246,7 @@ function select_port(options, i = 0) {
         port.open(function (error) {
             if (error) {
                 document.getElementById("connect_divice-menu").style.display = 'none'
-                alert("打开端口失败，请检查是否被其它程序占用！")
+                alert("打开端口失败，请检查是否被其它程序占用。")
             } else {
                 document.getElementById("connect_divice-menu").style.display = 'none'
                 document.getElementById('connect').innerHTML = '断开连接'
@@ -292,15 +292,17 @@ function uploads() {
         var parameters = [path, programName]
         var index = deviceList.indexOf(path)
         select_port(true)
-        exec(executablePath, parameters, function (err, data) {
-            if (err) {
-                console.error('uploads error: ', err)
-                popup("上传失败", "error", 200)
-            } else {
-                select_port(false, index)
-                popup("上传成功", "success", 200)
-            }
-        })
+        setTimeout(() => {
+            exec(executablePath, parameters, function (err, data) {
+                if (err) {
+                    console.error('uploads error: ', err)
+                    popup("上传失败", "error", 200)
+                } else {
+                    select_port(false, index)
+                    popup("上传成功", "success", 200)
+                }
+            })
+        }, 500);
     } else {
         popup("未连接设备！", "alarm", undefined)
     }
