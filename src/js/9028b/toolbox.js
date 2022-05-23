@@ -2,6 +2,8 @@ function addToolbox_9028b() {
     return `<xml style="display: none">
     <category name="循环" colour="#5CACEE">
       <block type="delay"></block>
+      <block type="loop"></block>
+      <block type="while"></block>
       <block type="controls_repeat_ext">
         <value name="TIMES">
           <block type="math_number">
@@ -49,6 +51,7 @@ function addToolbox_9028b() {
     </category>
     <sep></sep>
     <category name="数据" colour="#9AC0CD">
+    <block type="string"></block>
       <block type="math_number">
         <field name="NUM">123</field>
       </block>
@@ -113,19 +116,19 @@ function addToolbox_9028b() {
     <sep></sep>
     <category name="串口" colour="#9966ff">
     <block type="print"></block>
-    <block type="println"></block>
     </category>
     <sep></sep>
     <category name="电机" colour="#9AC0CD">
-  
+    <block type="motor"></block>
+    <block type="motor_stop"></block>
     </category>
     <sep></sep>
     <category name="LED" colour="#FF4040">
-  
+    <block type="led"></block>
     </category>
     <sep></sep>
     <category name="传感器" colour="#90EE90">
-  
+    <block type="ultrasonic"></block>
     </category>
     <sep></sep>
     <category name="音乐" colour="#00CED1">
